@@ -1,1 +1,1 @@
-# lcp43xx-cmake
+# lpc43xx-cmake
