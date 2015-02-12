@@ -27,7 +27,17 @@ else()
 endif()
 
 set(LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/platform/lpc43xx/lpc43xx.ld")
-set(CMAKE_EXE_LINKER_FLAGS "-nostdlib -Xlinker --gc-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb -T ${LINKER_SCRIPT}")
+
+# Set specs argument based on specified C library
+if(${CLIB} MATCHES newlib-nano)
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -specs=nano.specs -u _printf_float -u _scanf_float")
+elseif(${CLIB} MATCHES none)
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -specs=nosys.specs")
+elseif(${CLIB} MATCHES redlib)
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -specs=redlib.specs")
+endif()
+
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -nostdlib -Xlinker --gc-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb -T ${LINKER_SCRIPT}")
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(OUTPUT_NAME ${CMAKE_PROJECT_NAME}.axf)

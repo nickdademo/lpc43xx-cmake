@@ -11,8 +11,26 @@ else()
   endif()
 endif()
 
-# LPCOpen
+# Supported C libraries
+set(SUPPORTED_CLIBS newlib newlib-nano none redlib)
+
+# Check if C library has been set
+if(NOT CLIB)
+  message(STATUS "No C library set. Defaulting to newlib.")
+  set(CLIB newlib)
+else()
+    # Check if C library is supported
+    if(NOT ";${SUPPORTED_CLIBS};" MATCHES ${CLIB})
+      message(FATAL_ERROR "Specified C library is not supported: " ${CLIB})
+    endif()
+endif()
+
+###########
+# LPCOpen #
+###########
 add_subdirectory(sources/lpcopen/lpc_chip_43xx)
 
-# Application
+###############
+# Application #
+###############
 add_subdirectory(sources/application)
