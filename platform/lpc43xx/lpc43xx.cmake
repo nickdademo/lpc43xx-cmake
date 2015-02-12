@@ -3,6 +3,7 @@ add_definitions(
   -D__USE_LPCOPEN
   -D__CODE_RED
   -D__LPC43XX__
+  -D__MULTICORE_NONE
 
   -Wall                         # Enables all compiler warning messages
 
