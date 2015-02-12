@@ -1,31 +1,23 @@
-GROUP(libgcc.a libc.a libstdc++.a libm.a libcr_newlib_nohost.a crti.o crtn.o crtbegin.o crtend.o)
-
-MEMORY
-{
-  /* Define each memory region */
-  RamLoc128 (rwx) : ORIGIN = 0x10000118, LENGTH = 0x1FEE8 /* 128K bytes */
-  RamLoc72 (rwx) : ORIGIN = 0x10080000, LENGTH = 0x12000 /* 72K bytes */
-  RamAHB32 (rwx) : ORIGIN = 0x20000000, LENGTH = 0x8000 /* 32K bytes */
-  RamAHB16 (rwx) : ORIGIN = 0x20008000, LENGTH = 0x4000 /* 16K bytes */
-  RamAHB_ETB16 (rwx) : ORIGIN = 0x2000c000, LENGTH = 0x4000 /* 16K bytes */
-  SPIFI (rx) : ORIGIN = 0x14000000, LENGTH = 0x400000 /* 4M bytes */
-
-
-}
-  /* Define a symbol for the top of each memory region */
-  __top_RamLoc128 = 0x10000000 + 0x20000;
-  __top_RamLoc72 = 0x10080000 + 0x12000;
-  __top_RamAHB32 = 0x20000000 + 0x8000;
-  __top_RamAHB16 = 0x20008000 + 0x4000;
-  __top_RamAHB_ETB16 = 0x2000c000 + 0x4000;
-  __top_SPIFI = 0x14000000 + 0x400000;
+INCLUDE "lpc43xx_redlib_none_lib.ld"
+INCLUDE "../lpc43xx_mem.ld"
 
 ENTRY(ResetISR)
 
 SECTIONS
 {
+    
+    .text_Flash2 : ALIGN(4)
+    {
+       FILL(0xff)
+      *(.text_Flash2*) /* for compatibility with previous releases */
+      *(.text_MFlashB512*) /* for compatibility with previous releases */
+      *(.text.$Flash2*)
+      *(.text.$MFlashB512*)
+      *(.rodata.$Flash2*)
+      *(.rodata.$MFlashB512*)
+    } > MFlashB512
 
-    /* MAIN TEXT SECTION */ 
+    /* MAIN TEXT SECTION */    
     .text : ALIGN(4)
     {
         FILL(0xff)
@@ -70,7 +62,15 @@ SECTIONS
 
         *(.after_vectors*)
         
-    } >SPIFI
+        /* Code Read Protect data */
+        . = 0x000002FC ;
+        PROVIDE(__CRP_WORD_START__ = .) ;
+        KEEP(*(.crp))
+        PROVIDE(__CRP_WORD_END__ = .) ;
+        ASSERT(!(__CRP_WORD_START__ == __CRP_WORD_END__), "Linker CRP Enabled, but no CRP_WORD provided within application");
+        /* End of Code Read Protect */
+        
+    } >MFlashA512
     
     .text : ALIGN(4)    
     {
@@ -78,36 +78,7 @@ SECTIONS
         *(.rodata .rodata.* .constdata .constdata.*)
         . = ALIGN(4);
         
-        /* C++ constructors etc */
-        . = ALIGN(4);
-        KEEP(*(.init))
-        
-        . = ALIGN(4);
-        __preinit_array_start = .;
-        KEEP (*(.preinit_array))
-        __preinit_array_end = .;
-        
-        . = ALIGN(4);
-        __init_array_start = .;
-        KEEP (*(SORT(.init_array.*)))
-        KEEP (*(.init_array))
-        __init_array_end = .;
-        
-        KEEP(*(.fini));
-        
-        . = ALIGN(4);
-        KEEP (*crtbegin.o(.ctors))
-        KEEP (*(EXCLUDE_FILE (*crtend.o) .ctors))
-        KEEP (*(SORT(.ctors.*)))
-        KEEP (*crtend.o(.ctors))
-        
-        . = ALIGN(4);
-        KEEP (*crtbegin.o(.dtors))
-        KEEP (*(EXCLUDE_FILE (*crtend.o) .dtors))
-        KEEP (*(SORT(.dtors.*)))
-        KEEP (*crtend.o(.dtors))
-        /* End C++ */
-    } > SPIFI
+    } > MFlashA512
 
     /*
      * for exception handling/unwind - some Newlib functions (in common
@@ -115,62 +86,70 @@ SECTIONS
      */
     .ARM.extab : ALIGN(4)
     {
-        *(.ARM.extab* .gnu.linkonce.armextab.*)
-    } > SPIFI
+      *(.ARM.extab* .gnu.linkonce.armextab.*)
+    } > MFlashA512
     __exidx_start = .;
     
     .ARM.exidx : ALIGN(4)
     {
-        *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-    } > SPIFI
+      *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+    } > MFlashA512
     __exidx_end = .;
     
     _etext = .;
         
     
-    /* DATA section for RamLoc72 */
+    /* DATA section for RamLoc40 */
     .data_RAM2 : ALIGN(4)
     {
        FILL(0xff)
+       PROVIDE(__start_data_RAM2 = .) ;
        *(.ramfunc.$RAM2)
-       *(.ramfunc.$RamLoc72)
-        *(.data.$RAM2*)
-        *(.data.$RamLoc72*)
+       *(.ramfunc.$RamLoc40)
+      *(.data.$RAM2*)
+      *(.data.$RamLoc40*)
        . = ALIGN(4) ;
-    } > RamLoc72 AT>SPIFI
+       PROVIDE(__end_data_RAM2 = .) ;
+    } > RamLoc40 AT>MFlashA512
     
     /* DATA section for RamAHB32 */
     .data_RAM3 : ALIGN(4)
     {
        FILL(0xff)
+       PROVIDE(__start_data_RAM3 = .) ;
        *(.ramfunc.$RAM3)
        *(.ramfunc.$RamAHB32)
-        *(.data.$RAM3*)
-        *(.data.$RamAHB32*)
+      *(.data.$RAM3*)
+      *(.data.$RamAHB32*)
        . = ALIGN(4) ;
-    } > RamAHB32 AT>SPIFI
+       PROVIDE(__end_data_RAM3 = .) ;
+    } > RamAHB32 AT>MFlashA512
     
     /* DATA section for RamAHB16 */
     .data_RAM4 : ALIGN(4)
     {
        FILL(0xff)
+       PROVIDE(__start_data_RAM4 = .) ;
        *(.ramfunc.$RAM4)
        *(.ramfunc.$RamAHB16)
-        *(.data.$RAM4*)
-        *(.data.$RamAHB16*)
+      *(.data.$RAM4*)
+      *(.data.$RamAHB16*)
        . = ALIGN(4) ;
-    } > RamAHB16 AT>SPIFI
+       PROVIDE(__end_data_RAM4 = .) ;
+    } > RamAHB16 AT>MFlashA512
     
     /* DATA section for RamAHB_ETB16 */
     .data_RAM5 : ALIGN(4)
     {
        FILL(0xff)
+       PROVIDE(__start_data_RAM5 = .) ;
        *(.ramfunc.$RAM5)
        *(.ramfunc.$RamAHB_ETB16)
-        *(.data.$RAM5*)
-        *(.data.$RamAHB_ETB16*)
+      *(.data.$RAM5*)
+      *(.data.$RamAHB_ETB16*)
        . = ALIGN(4) ;
-    } > RamAHB_ETB16 AT>SPIFI
+       PROVIDE(__end_data_RAM5 = .) ;
+    } > RamAHB_ETB16 AT>MFlashA512
     
     /* MAIN DATA SECTION */
     
@@ -180,48 +159,56 @@ SECTIONS
         KEEP(*(.bss.$RESERVED*))
         . = ALIGN(4) ;
         _end_uninit_RESERVED = .;
-    } > RamLoc128
+    } > RamLoc32
 
-    
-    /* Main DATA section (RamLoc128) */
-    .data : ALIGN(4)
-    {
-       FILL(0xff)
-       _data = . ;
-       *(vtable)
-       *(.ramfunc*)
-       *(.data*)
-       . = ALIGN(4) ;
-       _edata = . ;
-    } > RamLoc128 AT>SPIFI
+  
+  /* Main DATA section (RamLoc32) */
+  .data : ALIGN(4)
+  {
+     FILL(0xff)
+     _data = . ;
+     *(vtable)
+     *(.ramfunc*)
+     *(.data*)
+     . = ALIGN(4) ;
+     _edata = . ;
+  } > RamLoc32 AT>MFlashA512
 
-    /* BSS section for RamLoc72 */
+    /* BSS section for RamLoc40 */
     .bss_RAM2 : ALIGN(4)
     {
-        *(.bss.$RAM2*)
-        *(.bss.$RamLoc72*)
+       PROVIDE(__start_bss_RAM2 = .) ;
+      *(.bss.$RAM2*)
+      *(.bss.$RamLoc40*)
        . = ALIGN(4) ;
-    } > RamLoc72
+       PROVIDE(__end_bss_RAM2 = .) ;
+    } > RamLoc40
     /* BSS section for RamAHB32 */
     .bss_RAM3 : ALIGN(4)
     {
-        *(.bss.$RAM3*)
-        *(.bss.$RamAHB32*)
+       PROVIDE(__start_bss_RAM3 = .) ;
+      *(.bss.$RAM3*)
+      *(.bss.$RamAHB32*)
        . = ALIGN(4) ;
+       PROVIDE(__end_bss_RAM3 = .) ;
     } > RamAHB32
     /* BSS section for RamAHB16 */
     .bss_RAM4 : ALIGN(4)
     {
-        *(.bss.$RAM4*)
-        *(.bss.$RamAHB16*)
+       PROVIDE(__start_bss_RAM4 = .) ;
+      *(.bss.$RAM4*)
+      *(.bss.$RamAHB16*)
        . = ALIGN(4) ;
+       PROVIDE(__end_bss_RAM4 = .) ;
     } > RamAHB16
     /* BSS section for RamAHB_ETB16 */
     .bss_RAM5 : ALIGN(4)
     {
-        *(.bss.$RAM5*)
-        *(.bss.$RamAHB_ETB16*)
+       PROVIDE(__start_bss_RAM5 = .) ;
+      *(.bss.$RAM5*)
+      *(.bss.$RamAHB_ETB16*)
        . = ALIGN(4) ;
+       PROVIDE(__end_bss_RAM5 = .) ;
     } > RamAHB_ETB16
 
     /* MAIN BSS SECTION */
@@ -233,34 +220,34 @@ SECTIONS
         . = ALIGN(4) ;
         _ebss = .;
         PROVIDE(end = .);
-    } > RamLoc128
+    } > RamLoc32
         
-    /* NOINIT section for RamLoc72 */
+    /* NOINIT section for RamLoc40 */
     .noinit_RAM2 (NOLOAD) : ALIGN(4)
     {
-        *(.noinit.$RAM2*)
-        *(.noinit.$RamLoc72*)
+      *(.noinit.$RAM2*)
+      *(.noinit.$RamLoc40*)
        . = ALIGN(4) ;
-    } > RamLoc72 
+    } > RamLoc40 
     /* NOINIT section for RamAHB32 */
     .noinit_RAM3 (NOLOAD) : ALIGN(4)
     {
-        *(.noinit.$RAM3*)
-        *(.noinit.$RamAHB32*)
+      *(.noinit.$RAM3*)
+      *(.noinit.$RamAHB32*)
        . = ALIGN(4) ;
     } > RamAHB32 
     /* NOINIT section for RamAHB16 */
     .noinit_RAM4 (NOLOAD) : ALIGN(4)
     {
-        *(.noinit.$RAM4*)
-        *(.noinit.$RamAHB16*)
+      *(.noinit.$RAM4*)
+      *(.noinit.$RamAHB16*)
        . = ALIGN(4) ;
     } > RamAHB16 
     /* NOINIT section for RamAHB_ETB16 */
     .noinit_RAM5 (NOLOAD) : ALIGN(4)
     {
-        *(.noinit.$RAM5*)
-        *(.noinit.$RamAHB_ETB16*)
+      *(.noinit.$RAM5*)
+      *(.noinit.$RamAHB_ETB16*)
        . = ALIGN(4) ;
     } > RamAHB_ETB16 
     
@@ -271,8 +258,8 @@ SECTIONS
         *(.noinit*) 
          . = ALIGN(4) ;
         _end_noinit = .;
-    } > RamLoc128
+    } > RamLoc32
     
-    PROVIDE(_pvHeapStart = .);
-    PROVIDE(_vStackTop = __top_RamLoc128 - 0);
+    PROVIDE(_pvHeapStart = DEFINED(__user_heap_base) ? __user_heap_base : .);
+    PROVIDE(_vStackTop = DEFINED(__user_stack_top) ? __user_stack_top : __top_RamLoc32 - 0);
 }

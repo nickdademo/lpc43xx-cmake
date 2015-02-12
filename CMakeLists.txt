@@ -12,16 +12,30 @@ else()
 endif()
 
 # Supported C libraries
-set(SUPPORTED_CLIBS newlib newlib-nano none redlib)
+set(SUPPORTED_CLIBS newlib newlib-nano redlib)
+
+# Supported hosting settings
+set(SUPPORTED_HOSTING none nohost semihosting)
 
 # Check if C library has been set
 if(NOT CLIB)
-  message(STATUS "No C library set. Defaulting to newlib.")
-  set(CLIB newlib)
+  message(STATUS "No C library set. Defaulting to newlib-nano.")
+  set(CLIB newlib-nano)
 else()
     # Check if C library is supported
     if(NOT ";${SUPPORTED_CLIBS};" MATCHES ${CLIB})
       message(FATAL_ERROR "Specified C library is not supported: " ${CLIB})
+    endif()
+endif()
+
+# Check if hosting has been set
+if(NOT HOSTING)
+  message(STATUS "No hosting set. Defaulting to 'nohost'.")
+  set(HOSTING nohost)
+else()
+    # Check if C library is supported
+    if(NOT ";${SUPPORTED_HOSTING};" MATCHES ${HOSTING})
+      message(FATAL_ERROR "Specified hosting setting is not supported: " ${HOSTING})
     endif()
 endif()
 
