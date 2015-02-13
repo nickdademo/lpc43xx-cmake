@@ -110,18 +110,26 @@ add_subdirectory(sources/application)
 #####################################
 # Eclipse .cproject patching script #
 #####################################
-if (CMAKE_HOST_WIN32)
-  execute_process(
-    COMMAND ${CMAKE_COMMAND} -E echo "${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/scripts/patch_cproject.py --pythonpath ${PYTHON_EXECUTABLE} --scriptpath ${PROJECT_SOURCE_DIR}/scripts --cproject ${PROJECT_BINARY_DIR}/.cproject --device ${DEVICE} --flashdriver ${FLASHDRIVER} --resetscript ${RESETSCRIPT}"
-    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-    OUTPUT_QUIET
-    OUTPUT_FILE patch_cproject.bat
-  )
+if(PYTHONINTERP_FOUND)
+  if (CMAKE_HOST_WIN32)
+    set(OUT patch_cproject.bat)
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E echo "${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/scripts/patch_cproject.py --pythonpath ${PYTHON_EXECUTABLE} --scriptpath ${PROJECT_SOURCE_DIR}/scripts --cproject ${PROJECT_BINARY_DIR}/.cproject --device ${DEVICE} --flashdriver ${FLASHDRIVER} --resetscript ${RESETSCRIPT}"
+      WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+      OUTPUT_QUIET
+      OUTPUT_FILE ${OUT}
+    )
+    message(STATUS "Eclipse .cproject patching script generated: " ${OUT})
+  else()
+    set(OUT patch_cproject.sh)
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E echo "#!/bin/bash\n${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/scripts/patch_cproject.py --pythonpath ${PYTHON_EXECUTABLE} --scriptpath ${PROJECT_SOURCE_DIR}/scripts --cproject ${PROJECT_BINARY_DIR}/.cproject --device ${DEVICE} --flashdriver ${FLASHDRIVER} --resetscript ${RESETSCRIPT}"
+      WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+      OUTPUT_QUIET
+      OUTPUT_FILE ${OUT}
+    )
+    message(STATUS "Eclipse .cproject patching script generated: " ${OUT})
+  endif()
 else()
-  execute_process(
-    COMMAND ${CMAKE_COMMAND} -E echo "#!/bin/bash\n${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/scripts/patch_cproject.py --pythonpath ${PYTHON_EXECUTABLE} --scriptpath ${PROJECT_SOURCE_DIR}/scripts --cproject ${PROJECT_BINARY_DIR}/.cproject --device ${DEVICE} --flashdriver ${FLASHDRIVER} --resetscript ${RESETSCRIPT}"
-    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-    OUTPUT_QUIET
-    OUTPUT_FILE patch_cproject.sh
-  )
+  message(STATUS "WARNING: Eclipse .cproject patching script NOT generated.")
 endif()
