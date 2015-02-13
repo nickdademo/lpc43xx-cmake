@@ -46,6 +46,7 @@ elseif(${CLIB} MATCHES redlib)
   add_definitions(-D__REDLIB__ -specs=redlib.specs)
   set(LINKER_SCRIPT "${LINKER_SCRIPT_DIR}/lpc43xx_redlib_${HOSTING}.ld")
 endif()
+message(STATUS "Linker script: " ${LINKER_SCRIPT})
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -nostdlib -Xlinker --gc-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb -T ${LINKER_SCRIPT} -L ${LINKER_SCRIPT_DIR}")
 

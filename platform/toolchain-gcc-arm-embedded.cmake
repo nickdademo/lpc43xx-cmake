@@ -26,6 +26,7 @@ set(CMAKE_OBJCOPY ${TOOLCHAIN_BIN_DIR}/${TARGET_TRIPLET}-objcopy${TOOLCHAIN_BIN_
 set(CMAKE_OBJDUMP ${TOOLCHAIN_BIN_DIR}/${TARGET_TRIPLET}-objdump${TOOLCHAIN_BIN_SUFFIX} CACHE INTERNAL "objdump")
 
 set(CMAKE_STRIP ${TOOLCHAIN_BIN_DIR}/${TARGET_TRIPLET}-strip${TOOLCHAIN_BIN_SUFFIX} CACHE INTERNAL "strip")
+set(CMAKE_SIZE ${TOOLCHAIN_BIN_DIR}/${TARGET_TRIPLET}-size${TOOLCHAIN_BIN_SUFFIX} CACHE INTERNAL "size")
 
 # Adjust the default behaviour of the FIND_XXX() commands:
 # i)    Search headers and libraries in the target environment
