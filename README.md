@@ -13,7 +13,7 @@
 1. Clone this repository.
 2. Create a new folder next to the cloned repository.
 3. Run CMake within the newly created folder to generate Makefiles and Eclipse project files (specify the correct path to the GNU ARM toolchain):  
-*$ cmake -DTOOLCHAIN_PREFIX="C:/nxp/LPCXpresso_7.6.2_326/lpcxpresso/tools" -G "Eclipse CDT4 - Unix Makefiles" ../lpc43xx-cmake*  
+*$ cmake -DTOOLCHAIN_PREFIX="C:/nxp/LPCXpresso_7.6.2_326/lpcxpresso/tools" -G "Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_VERSION=4.4.0 ../lpc43xx-cmake*  
 4. Build project:  
 *$ make*
 
