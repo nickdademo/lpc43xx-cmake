@@ -110,18 +110,20 @@ add_subdirectory(sources/application)
 # Print linker script used
 message(STATUS "Linker script: " ${LINKER_SCRIPT})
 
-# printf float
-if(${PRINTF_FLOAT})
-  message(STATUS "printf float enabled.")
-else()
-  message(STATUS "printf float disabled.")
-endif()
-
-# sprintf float
-if(${SPRINTF_FLOAT})
-  message(STATUS "sprintf float enabled.")
-else()
-  message(STATUS "sprintf float disabled.")
+# Print whether floats in printf and sprintf are enabled/disabled (newlib-nano and redlib only)
+if(${CLIB} MATCHES newlib-nano OR ${CLIB} MATCHES redlib)
+  # printf float
+  if(${PRINTF_FLOAT})
+    message(STATUS "printf float enabled.")
+  else()
+    message(STATUS "printf float disabled.")
+  endif()
+  # sprintf float
+  if(${SPRINTF_FLOAT})
+    message(STATUS "sprintf float enabled.")
+  else()
+    message(STATUS "sprintf float disabled.")
+  endif()
 endif()
 
 #####################################
