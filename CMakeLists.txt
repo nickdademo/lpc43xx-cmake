@@ -100,7 +100,7 @@ endif()
 ###########
 # LPCOpen #
 ###########
-add_subdirectory(sources/lpcopen/lpc_chip_43xx)
+add_subdirectory(sources/lpcopen/2.12/lpc_chip_43xx)
 
 ###############
 # Application #
@@ -111,6 +111,7 @@ add_subdirectory(sources/application)
 # Eclipse .cproject patching script #
 #####################################
 if(PYTHONINTERP_FOUND)
+  # Windows
   if (CMAKE_HOST_WIN32)
     set(OUT patch_cproject.bat)
     execute_process(
@@ -120,6 +121,7 @@ if(PYTHONINTERP_FOUND)
       OUTPUT_FILE ${OUT}
     )
     message(STATUS "Eclipse .cproject patching script generated: " ${OUT})
+  # Linux / MacOS
   else()
     set(OUT patch_cproject.sh)
     execute_process(

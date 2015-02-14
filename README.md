@@ -15,7 +15,10 @@
 3. Run CMake within the newly created folder to generate Makefiles and Eclipse project files (specify the correct path to the GNU ARM toolchain):  
 *$ cmake -DTOOLCHAIN_PREFIX="C:/nxp/LPCXpresso_7.6.2_326/lpcxpresso/tools" -G "Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_VERSION=4.4.0 ../lpc43xx-cmake*  
 4. Build project:  
-*$ make*
+*$ make*  
+5. (Optional - if debugging in LPCXpresso is required) Patch generated Eclipse .cproject file:  
+Windows: *$ patch_cproject.bat*  
+Linux/Mac: *$ patch_cproject.sh*  
 
 ## CMake Arguments
 A number of additional arguments can be specified to CMake to further configure the build:

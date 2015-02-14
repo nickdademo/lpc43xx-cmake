@@ -7,7 +7,7 @@ file(GLOB HEADER_FILES
   system/*.h
 )
 
-include_directories(../lpcopen/lpc_chip_43xx/inc)
+include_directories(../lpcopen/2.12/lpc_chip_43xx/inc)
 
 add_definitions(-DNO_BOARD_LIB)
 
