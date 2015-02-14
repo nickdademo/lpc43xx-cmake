@@ -32,3 +32,4 @@ A number of additional arguments can be specified to CMake to further configure 
 * **FLASHDRIVER**: LCPXpresso-supplied file which determines where the program will be flashed to and booted from. *Default: LPC18x7_43x7_2x512_BootA.cfx*
 * **PRINTF_FLOAT**: Set to "ON" or "OFF" to enable or disable float format in printf (for newlib-nano and redlib only). *Default: OFF*
 * **SPRINTF_FLOAT**: Set to "ON" or "OFF" to enable or disable float format in sprintf (for newlib-nano and redlib only). *Default: OFF*
+* **LANG**: Target language [C, CXX]. *Default: C*

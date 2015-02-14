@@ -16,7 +16,8 @@ if(NOT CMAKE_ECLIPSE_MAKE_ARGUMENTS)
 endif()
 message(STATUS "Eclipse make arguments: " ${CMAKE_ECLIPSE_MAKE_ARGUMENTS})
 
-project(HelloWorld C)
+# Supported languages
+set(SUPPORTED_LANGS C CXX)
 
 # Supported C libraries
 set(SUPPORTED_CLIBS newlib newlib-nano redlib)
@@ -26,6 +27,18 @@ set(SUPPORTED_HOSTING none nohost semihosting)
 
 # Supported target devices
 set(SUPPORTED_DEVICES LPC4357)
+
+# Set default language if not specified
+if(NOT DEFINED LANG)
+  set(LANG "C")
+else()
+  if(NOT ";${SUPPORTED_LANGS};" MATCHES ${LANG})
+    message(FATAL_ERROR "Specified language is not supported: " ${LANG})
+  endif()
+endif()
+message(STATUS "Language: " ${LANG})
+
+project(HelloWorld ${LANG})
 
 # Supported build configurations: "Release" and "Debug"
 set(CMAKE_CONFIGURATION_TYPES Debug Release)
@@ -44,7 +57,7 @@ else()
 endif()
 message(STATUS "Build type: " ${CMAKE_BUILD_TYPE})
 
-# Set C library if not specified
+# Set C/C++ library if not specified
 if(NOT CLIB)
   set(CLIB newlib-nano)
 else()
@@ -53,7 +66,7 @@ else()
       message(FATAL_ERROR "Specified C library is not supported: " ${CLIB})
     endif()
 endif()
-message(STATUS "C library: " ${CLIB})
+message(STATUS "C/C++ library: " ${CLIB})
 
 # Set hosting if not specified
 if(NOT HOSTING)

@@ -27,6 +27,11 @@ else()
   add_definitions(-O0 -g3 -DDEBUG)  # O0: Reduce compilation time and make debugging produce the expected results, g3: Level 3 debugging information
 endif()
 
+# Add required definitions for C++
+if(${LANG} MATCHES CXX)
+  add_definitions(-DCPP_USE_HEAP -fno-rtti)
+endif()
+
 set(LINKER_SCRIPT_DIR "${CMAKE_SOURCE_DIR}/platform/lpc43xx/ldscripts/${CLIB}")
 
 # Set specs argument and linker script based on specified C library

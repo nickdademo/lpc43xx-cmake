@@ -19,7 +19,9 @@ add_executable(${OUTPUT_NAME}
   ${HEADER_FILES}
 )
 
-set_target_properties(${OUTPUT_NAME} PROPERTIES LINKER_LANGUAGE C)
+set_target_properties(${OUTPUT_NAME} PROPERTIES
+  LINKER_LANGUAGE ${LANG}
+)
 target_link_libraries(${OUTPUT_NAME} lpc_chip_43xx)
 
 # Print size of binary

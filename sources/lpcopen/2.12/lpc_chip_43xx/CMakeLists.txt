@@ -17,6 +17,7 @@ add_library(${LIBRARY_NAME} STATIC
 
 set_target_properties(${LIBRARY_NAME} PROPERTIES
   OUTPUT_NAME "${LIBRARY_NAME}_${LIBRARY_VERSION}"
+  LINKER_LANGUAGE ${LANG}
 )
 
 include(${CMAKE_SOURCE_DIR}/platform/lpc43xx/lpc43xx.cmake)
