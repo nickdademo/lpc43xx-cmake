@@ -9,12 +9,15 @@ file(GLOB HEADER_FILES
 include_directories(../lpcopen/2.12/lpc_chip_43xx/inc)
 
 add_definitions(-DNO_BOARD_LIB)
+if(${CPP})
+  add_definitions(-DCPP_USE_HEAP)
+endif()
 
 include(${CMAKE_SOURCE_DIR}/platform/lpc43xx/lpc43xx.cmake)
 include(${CMAKE_SOURCE_DIR}/platform/lpc43xx/lpc43xx_targets.cmake)
 
 # Add system files
-if(${LANG} STREQUAL CXX)
+if(${CPP})
   set(SYSTEM_FILES system/cr_startup_lpc43xx.cpp system/cr_cpp_config.cpp system/crp.c system/sysinit.c)
 else()
   set(SYSTEM_FILES system/cr_startup_lpc43xx.c system/crp.c system/sysinit.c)

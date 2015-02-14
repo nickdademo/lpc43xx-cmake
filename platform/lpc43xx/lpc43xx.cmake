@@ -8,7 +8,7 @@ add_definitions(
   -c
 )
 
-# Build-specific definitions
+# Build type-specific definitions
 if(DEFINED CMAKE_RELEASE)
   add_definitions(-O2 -Os)          # O2: Optimize even more, Os: Optimize for size
 else()
@@ -18,11 +18,11 @@ endif()
 # C flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -fmessage-length=0 -ffunction-sections -fdata-sections -fsingle-precision-constant -fno-builtin -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=softfp")
 # C++ flags
-set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -fno-rtti -fno-exceptions -DCPP_USE_HEAP")
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -fno-rtti -fno-exceptions")
 
 set(LINKER_SCRIPT_DIR "${CMAKE_SOURCE_DIR}/platform/lpc43xx/ldscripts/${CLIB}")
 
-if(${LANG} STREQUAL CXX)
+if(${CPP})
   set(LINKER_SCRIPT_SUFFIX "_cpp")
 endif()
 
