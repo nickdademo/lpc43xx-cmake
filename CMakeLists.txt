@@ -107,6 +107,23 @@ add_subdirectory(sources/lpcopen/2.12/lpc_chip_43xx)
 ###############
 add_subdirectory(sources/application)
 
+# Print linker script used
+message(STATUS "Linker script: " ${LINKER_SCRIPT})
+
+# printf float
+if(${PRINTF_FLOAT})
+  message(STATUS "printf float enabled.")
+else()
+  message(STATUS "printf float disabled.")
+endif()
+
+# sprintf float
+if(${SPRINTF_FLOAT})
+  message(STATUS "sprintf float enabled.")
+else()
+  message(STATUS "sprintf float disabled.")
+endif()
+
 #####################################
 # Eclipse .cproject patching script #
 #####################################

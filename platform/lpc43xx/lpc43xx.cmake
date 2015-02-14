@@ -31,22 +31,36 @@ set(LINKER_SCRIPT_DIR "${CMAKE_SOURCE_DIR}/platform/lpc43xx/ldscripts/${CLIB}")
 
 # Set specs argument and linker script based on specified C library
 # newlib
-if(${CLIB} MATCHES newlib)
+if(${CLIB} STREQUAL newlib)
   add_definitions(-D__NEWLIB__)
-  set(LINKER_SCRIPT "${LINKER_SCRIPT_DIR}/lpc43xx_newlib_${HOSTING}.ld")
-endif()
+  set(LINKER_SCRIPT "${LINKER_SCRIPT_DIR}/lpc43xx_newlib_${HOSTING}.ld" CACHE INTERNAL "Linker script")
 # newlib-nano
-if(${CLIB} MATCHES newlib-nano)
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=nano.specs -u _printf_float -u _scanf_float")
+elseif(${CLIB} STREQUAL newlib-nano)
+  # printf float
+  if(${PRINTF_FLOAT})
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u _printf_float")
+  endif()
+  # sprintf float
+  if(${SPRINTF_FLOAT})
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u _sprintf_float")
+  endif()
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=nano.specs")
   add_definitions(-D__NEWLIB__ -specs=nano.specs)
-  set(LINKER_SCRIPT "${LINKER_SCRIPT_DIR}/lpc43xx_newlib-nano_${HOSTING}.ld")
+  set(LINKER_SCRIPT "${LINKER_SCRIPT_DIR}/lpc43xx_newlib-nano_${HOSTING}.ld" CACHE INTERNAL "Linker script")
 # redlib
-elseif(${CLIB} MATCHES redlib)
+elseif(${CLIB} STREQUAL redlib)
+  # printf float
+  if(${PRINTF_FLOAT})
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u _printf_float")
+  endif()
+  # sprintf float
+  if(${SPRINTF_FLOAT})
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u _sprintf_float")
+  endif()
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=redlib.specs")
   add_definitions(-D__REDLIB__ -specs=redlib.specs)
-  set(LINKER_SCRIPT "${LINKER_SCRIPT_DIR}/lpc43xx_redlib_${HOSTING}.ld")
+  set(LINKER_SCRIPT "${LINKER_SCRIPT_DIR}/lpc43xx_redlib_${HOSTING}.ld" CACHE INTERNAL "Linker script")
 endif()
-message(STATUS "Linker script: " ${LINKER_SCRIPT})
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -nostdlib -Xlinker --gc-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb -T ${LINKER_SCRIPT} -L ${LINKER_SCRIPT_DIR}")
 
