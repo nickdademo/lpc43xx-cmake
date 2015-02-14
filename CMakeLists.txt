@@ -12,15 +12,13 @@ set(SUPPORTED_HOSTING none nohost semihosting)
 # Supported target devices
 set(SUPPORTED_DEVICES LPC4357)
 
-# Set default language if not specified
-if(NOT DEFINED LANG)
-  set(LANG "C")
+# Check if C++ is enabled
+if(CPP)
+  set(LANG "CXX")
 else()
-  if(NOT ";${SUPPORTED_LANGS};" MATCHES ${LANG})
-    message(FATAL_ERROR "Specified language is not supported: " ${LANG})
-  endif()
+  set(LANG "C")
 endif()
-message(STATUS "Language: " ${LANG})
+message(STATUS "Target language: " ${LANG})
 
 # Set toolchain file if not specified
 if(NOT CMAKE_TOOLCHAIN_FILE)
