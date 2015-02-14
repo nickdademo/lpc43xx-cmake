@@ -67,6 +67,13 @@ else()
 endif()
 message(STATUS "C/C++ library: " ${CLIB})
 
+# Check if Code Read Protection is enabled
+if(CRP)
+  message(STATUS "Code Read Protection: Enabled")
+else()
+  message(STATUS "Code Read Protection: Disabled")
+endif()
+
 # Set hosting if not specified
 if(NOT HOSTING)
   set(HOSTING nohost)

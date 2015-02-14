@@ -11,7 +11,7 @@
 
 ## Building
 1. Clone this repository.
-2. Create a new folder next to the cloned repository.
+2. Create a new folder next to the cloned repository (e.g. 'lpc43xx-cmake_build').
 3. Run CMake within the newly created folder to generate Makefiles and Eclipse project files (specify the correct path to the GNU ARM toolchain):  
 *$ cmake -DTOOLCHAIN_PREFIX="C:/nxp/LPCXpresso_7.6.2_326/lpcxpresso/tools" -G "Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_VERSION=4.4.0 ../lpc43xx-cmake*  
 4. Build project:  
@@ -32,4 +32,5 @@ A number of additional arguments can be specified to CMake to further configure 
 * **FLASHDRIVER**: LCPXpresso-supplied file which determines where the program will be flashed to and booted from. *Default: LPC18x7_43x7_2x512_BootA.cfx*
 * **PRINTF_FLOAT**: Enable/disable float format in printf (for newlib-nano and redlib only) [ON, OFF]. *Default: OFF*
 * **SPRINTF_FLOAT**: Enable/disable float format in sprintf (for newlib-nano and redlib only) [ON, OFF]. *Default: OFF*
-* **CPP**: Enabled/disable C++ support [ON, OFF]. *Default: OFF*
+* **CPP**: Enable/disable C++ support [ON, OFF]. *Default: OFF*
+* **CRP**: Enable/disable Code Read Protection [ON, OFF]. *Default: OFF*

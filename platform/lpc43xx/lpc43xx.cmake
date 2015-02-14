@@ -20,17 +20,42 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -fmessage-length=0 -ffunction-sections
 # C++ flags
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -fno-rtti -fno-exceptions")
 
-set(LINKER_SCRIPT_DIR "${CMAKE_SOURCE_DIR}/platform/lpc43xx/ldscripts/${CLIB}")
+set(LINKER_SCRIPT_DIR "${CMAKE_SOURCE_DIR}/platform/lpc43xx/ldscripts/")
 
+# Dynamically create linker script
 if(${CPP})
-  set(LINKER_SCRIPT_SUFFIX "_cpp")
+  set(LINKER_SCRIPT_BASENAME "cpp/base")
+else()
+  set(LINKER_SCRIPT_BASENAME "base")
+endif()
+if(${CRP})
+  set(LINKER_SCRIPT_BASENAME "${LINKER_SCRIPT_BASENAME}_crp")
+endif()
+set(LINKER_SCRIPT_BASE base/${LINKER_SCRIPT_BASENAME}.ld)
+set(LINKER_SCRIPT_LIB lib/${CLIB}/${HOSTING}_lib.ld)
+set(LINKER_SCRIPT_MEM mem/mem.ld)
+set(LINKER_SCRIPT_FILENAME ${CMAKE_PROJECT_NAME}.ld)
+
+if(${CLIB} STREQUAL newlib OR ${CLIB} STREQUAL newlib-nano)
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} -E echo "INCLUDE \"${LINKER_SCRIPT_LIB}\"\nINCLUDE \"${LINKER_SCRIPT_MEM}\"\nINCLUDE \"${LINKER_SCRIPT_BASE}\"\nINCLUDE \"lib/${CLIB}/lib_cpp.ld\""
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+    OUTPUT_QUIET
+    OUTPUT_FILE ${LINKER_SCRIPT_FILENAME}
+  )
+else()
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} -E echo "INCLUDE \"${LINKER_SCRIPT_LIB}\"\nINCLUDE \"${LINKER_SCRIPT_MEM}\"\nINCLUDE \"${LINKER_SCRIPT_BASE}\""
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}}
+    OUTPUT_QUIET
+    OUTPUT_FILE ${LINKER_SCRIPT_FILENAME}
+  )
 endif()
 
-# Set specs argument and linker script based on specified C/C++ library and language
+# Set specs argument based on specified C/C++ library and language
 # newlib
 if(${CLIB} STREQUAL newlib)
   add_definitions(-D__NEWLIB__)
-  set(LINKER_SCRIPT "${LINKER_SCRIPT_DIR}/lpc43xx_newlib_${HOSTING}${LINKER_SCRIPT_SUFFIX}.ld" CACHE INTERNAL "Linker script")
 # newlib-nano
 elseif(${CLIB} STREQUAL newlib-nano)
   # printf float
@@ -43,7 +68,6 @@ elseif(${CLIB} STREQUAL newlib-nano)
   endif()
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=nano.specs")
   add_definitions(-D__NEWLIB__ -specs=nano.specs)
-  set(LINKER_SCRIPT "${LINKER_SCRIPT_DIR}/lpc43xx_newlib-nano_${HOSTING}${LINKER_SCRIPT_SUFFIX}.ld" CACHE INTERNAL "Linker script")
 # redlib
 elseif(${CLIB} STREQUAL redlib)
   # printf float
@@ -56,9 +80,9 @@ elseif(${CLIB} STREQUAL redlib)
   endif()
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=redlib.specs")
   add_definitions(-D__REDLIB__ -specs=redlib.specs)
-  set(LINKER_SCRIPT "${LINKER_SCRIPT_DIR}/lpc43xx_redlib_${HOSTING}.ld" CACHE INTERNAL "Linker script")
 endif()
 
+set(LINKER_SCRIPT ${PROJECT_BINARY_DIR}/${LINKER_SCRIPT_FILENAME} CACHE INTERNAL "Linker script")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -nostdlib -Xlinker --gc-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb -T ${LINKER_SCRIPT} -L ${LINKER_SCRIPT_DIR}")
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
