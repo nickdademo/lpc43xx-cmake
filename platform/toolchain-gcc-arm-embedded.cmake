@@ -6,7 +6,6 @@ endif()
 
 if(CMAKE_HOST_WIN32)
   set(TOOLCHAIN_BIN_SUFFIX ".exe")
-  message(STATUS "Toolchain binary suffix set to .exe")
 endif()
 
 set(TARGET_TRIPLET "arm-none-eabi")
@@ -40,11 +39,10 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 # CMake's compiler check, so fill in the results manually and mark the test
 # as passed:
 set(CMAKE_COMPILER_IS_GNUCC 1)
-if(${LANG} MATCHES C)
-  set(CMAKE_C_COMPILER_ID     GNU)
-  set(CMAKE_C_COMPILER_ID_RUN TRUE)
-  set(CMAKE_C_COMPILER_FORCED TRUE)
-else()
+set(CMAKE_C_COMPILER_ID     GNU)
+set(CMAKE_C_COMPILER_ID_RUN TRUE)
+set(CMAKE_C_COMPILER_FORCED TRUE)
+if(${LANG} STREQUAL CXX)
   set(CMAKE_CXX_COMPILER_ID     GNU)
   set(CMAKE_CXX_COMPILER_ID_RUN TRUE)
   set(CMAKE_CXX_COMPILER_FORCED TRUE)

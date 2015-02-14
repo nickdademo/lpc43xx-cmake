@@ -1,21 +1,5 @@
 cmake_minimum_required(VERSION 2.8.4)
 
-# Set toolchain file if not specified
-if(NOT CMAKE_TOOLCHAIN_FILE)
-  set(CMAKE_TOOLCHAIN_FILE platform/toolchain-gcc-arm-embedded.cmake)
-else()
-  if(NOT EXISTS ${CMAKE_TOOLCHAIN_FILE})
-    message(FATAL_ERROR "Toolchain file does not exist: " ${CMAKE_TOOLCHAIN_FILE})
-  endif()
-endif()
-message(STATUS "Toolchain file: " ${CMAKE_TOOLCHAIN_FILE})
-
-# Set Eclipse make arguments if not specified
-if(NOT CMAKE_ECLIPSE_MAKE_ARGUMENTS)
-  set(CMAKE_ECLIPSE_MAKE_ARGUMENTS "-j4") # Parallel building
-endif()
-message(STATUS "Eclipse make arguments: " ${CMAKE_ECLIPSE_MAKE_ARGUMENTS})
-
 # Supported languages
 set(SUPPORTED_LANGS C CXX)
 
@@ -37,6 +21,22 @@ else()
   endif()
 endif()
 message(STATUS "Language: " ${LANG})
+
+# Set toolchain file if not specified
+if(NOT CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_TOOLCHAIN_FILE platform/toolchain-gcc-arm-embedded.cmake)
+else()
+  if(NOT EXISTS ${CMAKE_TOOLCHAIN_FILE})
+    message(FATAL_ERROR "Toolchain file does not exist: " ${CMAKE_TOOLCHAIN_FILE})
+  endif()
+endif()
+message(STATUS "Toolchain file: " ${CMAKE_TOOLCHAIN_FILE})
+
+# Set Eclipse make arguments if not specified
+if(NOT CMAKE_ECLIPSE_MAKE_ARGUMENTS)
+  set(CMAKE_ECLIPSE_MAKE_ARGUMENTS "-j4") # Parallel building
+endif()
+message(STATUS "Eclipse make arguments: " ${CMAKE_ECLIPSE_MAKE_ARGUMENTS})
 
 project(HelloWorld ${LANG})
 
