@@ -38,7 +38,7 @@ set(LINKER_SCRIPT_FILENAME ${CMAKE_PROJECT_NAME}.ld)
 
 if(${CLIB} STREQUAL newlib OR ${CLIB} STREQUAL newlib-nano)
   execute_process(
-    COMMAND ${CMAKE_COMMAND} -E echo "INCLUDE \"${LINKER_SCRIPT_LIB}\"\nINCLUDE \"${LINKER_SCRIPT_MEM}\"\nINCLUDE \"${LINKER_SCRIPT_BASE}\"\nINCLUDE \"lib/${CLIB}/lib_cpp.ld\""
+    COMMAND ${CMAKE_COMMAND} -E echo "INCLUDE \"${LINKER_SCRIPT_LIB}\"\nINCLUDE \"lib/${CLIB}/lib_cpp.ld\"\nINCLUDE \"${LINKER_SCRIPT_MEM}\"\nINCLUDE \"${LINKER_SCRIPT_BASE}\""
     WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
     OUTPUT_QUIET
     OUTPUT_FILE ${LINKER_SCRIPT_FILENAME}
@@ -70,14 +70,6 @@ elseif(${CLIB} STREQUAL newlib-nano)
   add_definitions(-D__NEWLIB__ -specs=nano.specs)
 # redlib
 elseif(${CLIB} STREQUAL redlib)
-  # printf float
-  if(${PRINTF_FLOAT})
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u _printf_float")
-  endif()
-  # sprintf float
-  if(${SPRINTF_FLOAT})
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u _sprintf_float")
-  endif()
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=redlib.specs")
   add_definitions(-D__REDLIB__ -specs=redlib.specs)
 endif()
