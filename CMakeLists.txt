@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 2.8.4)
 
-# Supported languages
-set(SUPPORTED_LANGS C CXX)
-
 # Supported C libraries
 set(SUPPORTED_CLIBS newlib newlib-nano redlib)
 
@@ -59,9 +56,13 @@ message(STATUS "Build type: " ${CMAKE_BUILD_TYPE})
 if(NOT CLIB)
   set(CLIB newlib-nano)
 else()
-    # Check if C library is supported
+    # Check if library is supported
     if(NOT ";${SUPPORTED_CLIBS};" MATCHES ${CLIB})
-      message(FATAL_ERROR "Specified C library is not supported: " ${CLIB})
+      message(FATAL_ERROR "Specified library is not supported: " ${CLIB})
+    endif()
+    # Check if language/library combination is supported
+    if(${CPP} AND ${CLIB} STREQUAL redlib)
+      message(FATAL_ERROR "Specified library does not support C++: " ${CLIB})
     endif()
 endif()
 message(STATUS "C/C++ library: " ${CLIB})
