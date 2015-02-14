@@ -16,7 +16,7 @@
 *$ cmake -DTOOLCHAIN_PREFIX="C:/nxp/LPCXpresso_7.6.2_326/lpcxpresso/tools" -G "Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_VERSION=4.4.0 ../lpc43xx-cmake*  
 4. Build project:  
 *$ make*  
-5. (Optional - if debugging in LPCXpresso is required) Patch generated Eclipse .cproject file:  
+5. (OPTIONAL: if debugging within LPCXpresso is required) Patch generated Eclipse .cproject file:  
 Windows: *$ patch_cproject.bat*  
 Linux/Mac: *$ patch_cproject.sh*  
 
