@@ -38,7 +38,7 @@ if(NOT CMAKE_ECLIPSE_MAKE_ARGUMENTS)
 endif()
 message(STATUS "Eclipse make arguments: " ${CMAKE_ECLIPSE_MAKE_ARGUMENTS})
 
-project(HelloWorld ${LANG})
+project(HelloWorld)
 
 # Supported build configurations: "Release" and "Debug"
 set(CMAKE_CONFIGURATION_TYPES Debug Release)

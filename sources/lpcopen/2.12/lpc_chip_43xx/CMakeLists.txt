@@ -10,6 +10,8 @@ file(GLOB_RECURSE HEADER_FILES inc/*.h)
 
 include_directories(inc)
 
+set_source_files_properties(${SOURCE_FILES} PROPERTIES LANGUAGE C)
+
 add_library(${LIBRARY_NAME} STATIC
   ${SOURCE_FILES}
   ${HEADER_FILES}
@@ -17,6 +19,7 @@ add_library(${LIBRARY_NAME} STATIC
 
 set_target_properties(${LIBRARY_NAME} PROPERTIES
   OUTPUT_NAME "${LIBRARY_NAME}_${LIBRARY_VERSION}"
+  LINKER_LANGUAGE C
 )
 
 include(${CMAKE_SOURCE_DIR}/platform/lpc43xx/lpc43xx.cmake)

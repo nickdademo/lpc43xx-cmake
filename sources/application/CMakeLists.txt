@@ -14,6 +14,8 @@ add_definitions(-DNO_BOARD_LIB)
 include(${CMAKE_SOURCE_DIR}/platform/lpc43xx/lpc43xx.cmake)
 include(${CMAKE_SOURCE_DIR}/platform/lpc43xx/lpc43xx_targets.cmake)
 
+set_source_files_properties(${SOURCE_FILES} PROPERTIES LANGUAGE ${LANG})
+
 add_executable(${OUTPUT_NAME}
   ${SOURCE_FILES}
   ${HEADER_FILES}
