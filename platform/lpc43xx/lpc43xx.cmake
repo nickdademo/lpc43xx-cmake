@@ -20,7 +20,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -fmessage-length=0 -ffunction-sections
 # C++ flags
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -fno-rtti -fno-exceptions")
 
-set(LINKER_SCRIPT_DIR "${CMAKE_SOURCE_DIR}/platform/lpc43xx/ldscripts/")
+set(LINKER_SCRIPT_DIR "${CMAKE_SOURCE_DIR}/platform/lpc43xx/ldscripts")
 
 # Dynamically create linker script
 if(${CPP})
@@ -67,11 +67,11 @@ elseif(${CLIB} STREQUAL newlib-nano)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u _sprintf_float")
   endif()
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=nano.specs")
-  add_definitions(-D__NEWLIB__ -specs=nano.specs)
+  add_definitions(-D__NEWLIB__)
 # redlib
 elseif(${CLIB} STREQUAL redlib)
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=redlib.specs")
-  add_definitions(-D__REDLIB__ -specs=redlib.specs)
+  add_definitions(-D__REDLIB__)
 endif()
 
 set(LINKER_SCRIPT ${PROJECT_BINARY_DIR}/${LINKER_SCRIPT_FILENAME} CACHE INTERNAL "Linker script")
