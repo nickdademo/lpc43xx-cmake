@@ -157,8 +157,11 @@ if(DEFINED BSP_NAME)
     message(STATUS "Board Support Package: " ${BSP_NAME})
     message(STATUS "Board Support Version: " ${BSP_VERSION})
   else()
+    add_definitions(-DNO_BOARD_LIB)
     message(STATUS "WARNING: No BSP version specified. BSP will NOT be included in build.")
   endif()
+else()
+  add_definitions(-DNO_BOARD_LIB)
 endif()
 
 ###############
