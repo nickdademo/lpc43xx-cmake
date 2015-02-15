@@ -66,11 +66,11 @@ elseif(${CLIB} STREQUAL newlib-nano)
   if(${SPRINTF_FLOAT})
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u _sprintf_float")
   endif()
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -specs=nano.specs")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=nano.specs")
   add_definitions(-D__NEWLIB__ -specs=nano.specs)
 # redlib
 elseif(${CLIB} STREQUAL redlib)
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -specs=redlib.specs")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=redlib.specs")
   add_definitions(-D__REDLIB__ -specs=redlib.specs)
 endif()
 

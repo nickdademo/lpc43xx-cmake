@@ -3,8 +3,7 @@
 *Versions listed are verified as working.*
 * CMake (v3.1.2): http://www.cmake.org/
 * GNU ARM Toolchain:
- * OPTION 1) GCC ARM Embedded (v4.9 2014 Q4): https://launchpad.net/gcc-arm-embedded
- * OPTION 2) LPCXpresso (v7.6.2): http://www.lpcware.com/lpcxpresso/download
+ * LPCXpresso (v7.6.2): http://www.lpcware.com/lpcxpresso/download
 * (Windows-only) GNU ARM Build Tools (v2.3): http://sourceforge.net/projects/gnuarmeclipse/files/Build%20Tools/
  * Ensure the path to the installed tools is added to the Windows `PATH` variable.
 * Python 3.4+ (v3.4.2) (if debugging within LPCXpresso is required): https://www.python.org/downloads/
