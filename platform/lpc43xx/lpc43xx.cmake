@@ -52,7 +52,7 @@ else()
   )
 endif()
 
-# Set specs argument based on specified C/C++ library and language
+# Set specs argument and definitions based on specified C/C++ library
 # newlib
 if(${CLIB} STREQUAL newlib)
   add_definitions(-D__NEWLIB__)
@@ -70,6 +70,14 @@ elseif(${CLIB} STREQUAL newlib-nano)
   add_definitions(-D__NEWLIB__ -specs=nano.specs)
 # redlib
 elseif(${CLIB} STREQUAL redlib)
+  # printf float
+  if(NOT ${PRINTF_FLOAT})
+    add_definitions(-DCR_INTEGER_PRINTF)
+  endif()
+  # character-based printf (rather than string-based)
+  if(${CHAR_PRINTF})
+    add_definitions(-DCR_PRINTF_CHAR)
+  endif()
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=redlib.specs")
   add_definitions(-D__REDLIB__ -specs=redlib.specs)
 endif()

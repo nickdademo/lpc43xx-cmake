@@ -42,7 +42,8 @@ A number of additional arguments can be specified to CMake to further configure 
 * **HOSTING**: Hosting settings for the build [none, nohost, semihosting]. *Default: nohost*
 * **DEVICE**: Target device name [LPC4357]. *Default: LPC4357*
 * **FLASHDRIVER**: LPCXpresso-supplied file which determines where the program will be flashed to and booted from. *Default: LPC18x7_43x7_2x512_BootA.cfx*
-* **PRINTF_FLOAT**: Enable/disable float format in printf (for newlib-nano only) [ON, OFF]. *Default: OFF*
+* **PRINTF_FLOAT**: Enable/disable float format in printf (for newlib-nano and redlib only) [ON, OFF]. *Default: OFF*
 * **SPRINTF_FLOAT**: Enable/disable float format in sprintf (for newlib-nano only) [ON, OFF]. *Default: OFF*
+* **CHAR_PRINTF**: Enable/disable character-based printf (rather than string-based) (for redlib only) [ON, OFF]. *Default: OFF*
 * **CPP**: Enable/disable C++ support [ON, OFF]. *Default: OFF*
 * **CRP**: Enable/disable Code Read Protection [ON, OFF]. *Default: OFF*
