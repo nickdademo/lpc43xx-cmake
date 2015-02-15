@@ -47,3 +47,4 @@ A number of additional arguments can be specified to CMake to further configure 
 * **CHAR_PRINTF**: Enable/disable character-based printf (rather than string-based) (for redlib only) [ON, OFF]. *Default: OFF*
 * **CPP**: Enable/disable C++ support [ON, OFF]. *Default: OFF*
 * **CRP**: Enable/disable Code Read Protection [ON, OFF]. *Default: OFF*
+* **BSP**: Use a Board Support Package contained in the *sources/bsp* folder. For example: "lpc_board_ea_oem_4357".

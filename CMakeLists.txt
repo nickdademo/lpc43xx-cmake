@@ -136,6 +136,14 @@ endif()
 ###########
 add_subdirectory(sources/lpcopen/2.12/lpc_chip_43xx)
 
+#########################
+# Board Support Package #
+#########################
+if(DEFINED BSP)
+  message("Board Support Package: " ${BSP})
+  add_subdirectory(sources/bsp/${BSP})
+endif()
+
 ###############
 # Application #
 ###############

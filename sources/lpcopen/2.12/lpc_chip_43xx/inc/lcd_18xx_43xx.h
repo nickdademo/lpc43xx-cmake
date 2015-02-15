@@ -116,6 +116,10 @@ typedef enum {
 #define CLCDC_LCDCTRL_ENABLE    _BIT(0)		/*!< LCD control enable bit */
 #define CLCDC_LCDCTRL_PWR       _BIT(11)	/*!< LCD control power enable bit */
 
+/** LCD Clock and Signal Polarity Register */
+#define CLCDC_LCDPOL_BCD        _BIT(26)	/*!< Bypass pixel clock divider bit */
+#define CLCDC_LCDPOL_CLKSEL     _BIT(5)     /*!< Clock select bit */
+
 /**
  * @brief A structure for LCD Configuration
  */
@@ -136,6 +140,7 @@ typedef struct {
 	uint8_t  BPP;	/*!< Maximum bits per pixel the display supports */
 	LCD_PANEL_OPT_T  LCD;	/*!< LCD panel type */
 	LCD_COLOR_FORMAT_OPT_T  color_format;	/*!<BGR or RGB */
+	uint32_t Clock; /*!< Wanted panel clock in Hz or 0 to use GP_CLKIN */
 	uint8_t  Dual;	/*!< Dual panel, 1 = dual panel display */
 } LCD_CONFIG_T;
 

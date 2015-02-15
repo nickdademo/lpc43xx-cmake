@@ -8,7 +8,6 @@ file(GLOB HEADER_FILES
 
 include_directories(../lpcopen/2.12/lpc_chip_43xx/inc)
 
-add_definitions(-DNO_BOARD_LIB)
 if(${CPP})
   add_definitions(-DCPP_USE_HEAP)
 endif()
@@ -32,7 +31,14 @@ add_executable(${OUTPUT_NAME}
 set_target_properties(${OUTPUT_NAME} PROPERTIES
   LINKER_LANGUAGE ${LANG}
 )
-target_link_libraries(${OUTPUT_NAME} lpc_chip_43xx)
+
+if(DEFINED BSP)
+  include_directories(../bsp/${BSP}/inc)
+  target_link_libraries(${OUTPUT_NAME} ${BSP})
+else()
+  add_definitions(-DNO_BOARD_LIB)
+  target_link_libraries(${OUTPUT_NAME} lpc_chip_43xx)
+endif()
 
 # Print size of binary
 add_custom_command(
