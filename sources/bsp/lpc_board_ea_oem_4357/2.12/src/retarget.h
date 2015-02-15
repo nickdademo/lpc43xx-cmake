@@ -208,15 +208,15 @@ _STD_END
 	#define WRITEFUNC __sys_write
 	#define READFUNC __sys_readc
 #else
-    /* We are using original Redlib semihosting interface */
-    #if defined(__REDLIB__)
-	    #define WRITEFUNC __write
-	    #define READFUNC __readc
-    /* newlib / newlib-nano */
-    #else
-	    #define WRITEFUNC _write
-	    #define READFUNC _read
-    #endif
+	/* We are using original Redlib semihosting interface */
+	#if defined(__REDLIB__)
+		#define WRITEFUNC __write
+		#define READFUNC __readc
+	/* newlib / newlib-nano */
+	#else
+		#define WRITEFUNC _write
+		#define READFUNC _read
+	#endif
 #endif
 
 #if defined(DEBUG_ENABLE)
