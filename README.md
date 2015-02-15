@@ -6,19 +6,29 @@
  * OPTION 1) GCC ARM Embedded (v4.9 2014 Q4): https://launchpad.net/gcc-arm-embedded
  * OPTION 2) LPCXpresso (v7.6.2): http://www.lpcware.com/lpcxpresso/download
 * (Windows-only) GNU ARM Build Tools (v2.3): http://sourceforge.net/projects/gnuarmeclipse/files/Build%20Tools/
- * Ensure the path to the installed tools is added to the Windows PATH variable.
+ * Ensure the path to the installed tools is added to the Windows `PATH` variable.
 * Python 3.4+ (v3.4.2) (if debugging within LPCXpresso is required): https://www.python.org/downloads/
 
 ## Building
 1. Clone this repository.
 2. Create a new folder next to the cloned repository (e.g. 'lpc43xx-cmake_build').
-3. Run CMake within the newly created folder to generate Makefiles and Eclipse project files (specify the correct path to the GNU ARM toolchain):  
-*$ cmake -DTOOLCHAIN_PREFIX="C:/nxp/LPCXpresso_7.6.2_326/lpcxpresso/tools" -G "Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_VERSION=4.4.0 ../lpc43xx-cmake*  
-4. Build project:  
-*$ make*  
-5. (OPTIONAL: if debugging within LPCXpresso is required) Patch generated Eclipse .cproject file:  
-Windows: *$ patch_cproject.bat*  
-Linux/Mac: *$ patch_cproject.sh*  
+3. Run CMake within the newly created folder to generate Makefiles and Eclipse project files (specify the correct path to the GNU ARM toolchain):
+```
+$ cmake -DTOOLCHAIN_PREFIX="C:/nxp/LPCXpresso_7.6.2_326/lpcxpresso/tools" -G "Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_VERSION=4.4.0 ../lpc43xx-cmake
+```
+4. Build project:
+```
+$ make
+```
+5. (OPTIONAL: if debugging within LPCXpresso is required) Patch generated Eclipse .cproject file:
+Windows:
+```
+$ patch_cproject.bat
+```
+Linux/Mac:
+```
+$ patch_cproject.sh
+```
 
 ## CMake Arguments
 A number of additional arguments can be specified to CMake to further configure the build:
