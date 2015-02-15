@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 2.8.4)
 
+if(CMAKE_HOST_WIN32)
+  set(EXECUTABLE_SUFFIX .exe)
+endif()
+
 # Supported C libraries
 set(SUPPORTED_CLIBS newlib newlib-nano redlib)
 
@@ -114,6 +118,17 @@ if(NOT PYTHONINTERP_FOUND)
   message(STATUS "WARNING: Python could not be found. Python is required for debugging within LPCXpresso.")
 else()
   message(STATUS "Python found: " ${PYTHON_EXECUTABLE})
+endif()
+
+# Check if LPCXpresso checksum tool is present
+if(EXISTS ${TOOLCHAIN_PREFIX}/../bin/checksum${EXECUTABLE_SUFFIX})
+  set(CHECKSUM_TOOL ${TOOLCHAIN_PREFIX}/../bin/checksum)
+  set(HAVE_CHECKSUM_TOOL ON)
+  message(STATUS "LPCXpresso checksum tool found: " ${CHECKSUM_TOOL})
+  message(STATUS "'bin' make target will add checksum information.")
+else()
+  set(HAVE_CHECKSUM_TOOL OFF)
+  message(STATUS "WARNING: LPCXpresso checksum tool not found. 'bin' make target will NOT add checksum information.")
 endif()
 
 ###########

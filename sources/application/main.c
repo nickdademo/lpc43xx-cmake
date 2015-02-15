@@ -13,7 +13,6 @@ int main(void)
 
     while(1)
     {
-    	// P1_1-A6-BS0
     	Chip_GPIO_SetPinState(LPC_GPIO_PORT, PORT, BIT, true);
         for(i = 0; i < 2000000; i++)
         {
