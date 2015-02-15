@@ -47,4 +47,12 @@ A number of additional arguments can be specified to CMake to further configure 
 * **CHAR_PRINTF**: Enable/disable character-based printf (rather than string-based) (for redlib only) [ON, OFF]. *Default: OFF*
 * **CPP**: Enable/disable C++ support [ON, OFF]. *Default: OFF*
 * **CRP**: Enable/disable Code Read Protection [ON, OFF]. *Default: OFF*
-* **BSP**: Use a Board Support Package contained in the *sources/bsp* folder. For example: "lpc_board_ea_oem_4357".
+* **BSP**: Use a Board Support Package contained in the *sources/bsp* folder. For example: "lpc_board_ea_oem_4357". *No BSP is used if this argument is not passed.*
+
+## Make Targets
+* ```make```: Builds the entire project and outputs an .axf (ARM Executable Format) file - this is actually a ELF/DWARF image. Equivalent to ```make all```.
+* ```make <target_name>```: Build only a specific target (e.g: ```make lpc_chip_43xx```)
+* ```make clean```: Cleans all target output files
+* ```make hex```: Generate a hex file
+* ```make bin```: Generate a binary file which includes the required checksum (See: http://www.lpcware.com/content/faq/lpcxpresso/image-checksums)
+* ```make lst```: Generate a listings file
