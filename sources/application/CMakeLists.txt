@@ -6,7 +6,9 @@ file(GLOB HEADER_FILES
   *.h
 )
 
-include_directories(../lpcopen/2.12/lpc_chip_43xx/inc)
+set(LPCOPEN_VERSION 2.12)
+
+include_directories(../lpcopen/${LPCOPEN_VERSION}/lpc_chip_43xx/inc)
 
 if(${CPP})
   add_definitions(-DCPP_USE_HEAP)
