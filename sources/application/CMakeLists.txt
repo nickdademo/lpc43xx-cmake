@@ -32,9 +32,9 @@ set_target_properties(${OUTPUT_NAME} PROPERTIES
   LINKER_LANGUAGE ${LANG}
 )
 
-if(DEFINED BSP)
-  include_directories(../bsp/${BSP}/inc)
-  target_link_libraries(${OUTPUT_NAME} ${BSP})
+if(DEFINED BSP_PATH)
+  include_directories(../bsp/${BSP_PATH}/inc)
+  target_link_libraries(${OUTPUT_NAME} ${BSP_NAME})
 else()
   add_definitions(-DNO_BOARD_LIB)
   target_link_libraries(${OUTPUT_NAME} lpc_chip_43xx)

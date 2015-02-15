@@ -47,7 +47,8 @@ A number of additional arguments can be specified to CMake to further configure 
 * **CHAR_PRINTF**: Enable/disable character-based printf (rather than string-based) (for redlib only) [ON, OFF]. *Default: OFF*
 * **CPP**: Enable/disable C++ support [ON, OFF]. *Default: OFF*
 * **CRP**: Enable/disable Code Read Protection [ON, OFF]. *Default: OFF*
-* **BSP**: Use a Board Support Package contained in the *sources/bsp* folder. For example: "lpc_board_ea_oem_4357". *No BSP is used if this argument is not passed.*
+* **BSP_NAME**: Use a Board Support Package. The value must match the BSP folder name located in *sources/bsp*. For example: "lpc_board_ea_oem_4357". *No BSP is used if this argument is not passed.*
+* **BSP_VERSION**: Board Support Package version to use. The value must match the name of a subdirectory in the BSP folder. For example: "2.12". *This argument must be specified with BSP_NAME.*
 
 ## Make Targets
 * ```make```: Builds the entire project and outputs an .axf (ARM Executable Format) file - this is actually a ELF/DWARF image. Equivalent to ```make all```.

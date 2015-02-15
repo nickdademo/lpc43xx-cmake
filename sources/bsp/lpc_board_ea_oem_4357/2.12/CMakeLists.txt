@@ -15,7 +15,7 @@ file(GLOB_RECURSE HEADER_FILES
 
 include_directories(inc)
 include_directories(src)
-include_directories(../../lpcopen/2.12/lpc_chip_43xx/inc)
+include_directories(../../../lpcopen/2.12/lpc_chip_43xx/inc)
 
 set_source_files_properties(${SOURCE_FILES} PROPERTIES LANGUAGE C)
 
