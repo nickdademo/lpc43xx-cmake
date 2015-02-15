@@ -8,6 +8,7 @@
 * (Windows-only) GNU ARM Build Tools (v2.3): http://sourceforge.net/projects/gnuarmeclipse/files/Build%20Tools/
  * Ensure the path to the installed tools is added to the Windows `PATH` variable.
 * Python 3.4+ (v3.4.2) (if debugging within LPCXpresso is required): https://www.python.org/downloads/
+ * Requires lxml package: http://lxml.de/
 
 ## Building
 1. Clone this repository.
@@ -21,6 +22,7 @@ $ cmake -DTOOLCHAIN_PREFIX="C:/nxp/LPCXpresso_7.6.2_326/lpcxpresso/tools" -G "Ec
 $ make
 ```
 5. (OPTIONAL: if debugging within LPCXpresso is required) Patch generated Eclipse .cproject file:
+
 Windows:
 ```
 $ patch_cproject.bat
@@ -29,6 +31,7 @@ Linux/Mac:
 ```
 $ patch_cproject.sh
 ```
+**IMPORTANT:** Patch must be re-applied if CMake is re-run.
 
 ## CMake Arguments
 A number of additional arguments can be specified to CMake to further configure the build:
