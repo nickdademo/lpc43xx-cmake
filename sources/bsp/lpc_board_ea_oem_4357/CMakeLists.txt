@@ -5,10 +5,16 @@ set(LIBRARY_VERSION_MINOR 1)
 set(LIBRARY_VERSION_PATCH 2)
 set(LIBRARY_VERSION ${LIBRARY_VERSION_MAJOR}.${LIBRARY_VERSION_MINOR}.${LIBRARY_VERSION_PATCH})
 
-file(GLOB_RECURSE SOURCE_FILES src/*.c)
-file(GLOB_RECURSE HEADER_FILES inc/*.h)
+file(GLOB_RECURSE SOURCE_FILES
+  src/*.c
+)
+file(GLOB_RECURSE HEADER_FILES
+  inc/*.h
+  src/*.h
+)
 
 include_directories(inc)
+include_directories(src)
 include_directories(../../lpcopen/2.12/lpc_chip_43xx/inc)
 
 set_source_files_properties(${SOURCE_FILES} PROPERTIES LANGUAGE C)

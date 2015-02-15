@@ -33,18 +33,19 @@ int main(void)
         #if defined (__USE_LPCOPEN)
         #if !defined(NO_BOARD_LIB)
         Board_LED_Toggle(0);
-        for(i = 0; i < 2000000; i++)
+        printf("LED toggled\r\n");
+        for(i = 0; i < 8000000; i++)
         {
             __asm__("nop");
         }
         #else
         Chip_GPIO_SetPinState(LPC_GPIO_PORT, PORT, BIT, true);
-        for(i = 0; i < 2000000; i++)
+        for(i = 0; i < 8000000; i++)
         {
             __asm__("nop");
         }
         Chip_GPIO_SetPinState(LPC_GPIO_PORT, PORT, BIT, false);
-        for(i = 0; i < 2000000; i++)
+        for(i = 0; i < 8000000; i++)
         {
             __asm__("nop");
         }
