@@ -131,8 +131,10 @@ else()
   message(STATUS "WARNING: LPCXpresso checksum tool not found. 'bin' make target will NOT add checksum information.")
 endif()
 
-# Store the path to the application source in a variable
+# Store paths to commonly used files/locations for convenience
 set(APP_PATH ${CMAKE_SOURCE_DIR}/sources/application)
+set(PLATFORM_FILE ${CMAKE_SOURCE_DIR}/platform/lpc43xx/lpc43xx.cmake)
+set(PLATFORM_TARGETS ${CMAKE_SOURCE_DIR}/platform/lpc43xx/lpc43xx_targets.cmake)
 
 ###########
 # LPCOpen #

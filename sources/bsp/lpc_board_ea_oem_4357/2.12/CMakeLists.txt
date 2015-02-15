@@ -31,4 +31,4 @@ set_target_properties(${LIBRARY_NAME} PROPERTIES
 
 target_link_libraries(${LIBRARY_NAME} lpc_chip_43xx)
 
-include(${CMAKE_SOURCE_DIR}/platform/lpc43xx/lpc43xx.cmake)
+include(${PLATFORM_FILE})

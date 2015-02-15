@@ -22,4 +22,4 @@ set_target_properties(${LIBRARY_NAME} PROPERTIES
   LINKER_LANGUAGE C
 )
 
-include(${CMAKE_SOURCE_DIR}/platform/lpc43xx/lpc43xx.cmake)
+include(${PLATFORM_FILE})

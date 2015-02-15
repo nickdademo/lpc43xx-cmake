@@ -12,8 +12,8 @@ if(${CPP})
   add_definitions(-DCPP_USE_HEAP)
 endif()
 
-include(${CMAKE_SOURCE_DIR}/platform/lpc43xx/lpc43xx.cmake)
-include(${CMAKE_SOURCE_DIR}/platform/lpc43xx/lpc43xx_targets.cmake)
+include(${PLATFORM_FILE})
+include(${PLATFORM_TARGETS})
 
 # Add system files
 if(${CPP})
