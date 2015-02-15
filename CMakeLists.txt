@@ -187,6 +187,11 @@ if(PYTHONINTERP_FOUND)
       OUTPUT_QUIET
       OUTPUT_FILE ${OUT}
     )
+    execute_process(
+      COMMAND chmod +x ${OUT}
+      WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+      OUTPUT_QUIET
+    )
     message(STATUS "Eclipse .cproject patching script generated: " ${OUT})
   endif()
 else()
