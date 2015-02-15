@@ -6,9 +6,7 @@ file(GLOB HEADER_FILES
   *.h
 )
 
-set(LPCOPEN_VERSION 2.12)
-
-include_directories(../lpcopen/${LPCOPEN_VERSION}/lpc_chip_43xx/inc)
+include_directories(${LPCOPEN_PATH}/inc)
 
 if(${CPP})
   add_definitions(-DCPP_USE_HEAP)
@@ -35,7 +33,7 @@ set_target_properties(${OUTPUT_NAME} PROPERTIES
 )
 
 if(DEFINED BSP_PATH)
-  include_directories(../bsp/${BSP_PATH}/inc)
+  include_directories(${BSP_PATH}/inc)
   target_link_libraries(${OUTPUT_NAME} ${BSP_NAME})
 else()
   add_definitions(-DNO_BOARD_LIB)

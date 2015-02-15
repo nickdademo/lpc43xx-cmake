@@ -131,18 +131,27 @@ else()
   message(STATUS "WARNING: LPCXpresso checksum tool not found. 'bin' make target will NOT add checksum information.")
 endif()
 
+# Store the path to the application source in a variable
+set(APP_PATH ${CMAKE_SOURCE_DIR}/sources/application)
+
 ###########
 # LPCOpen #
 ###########
-add_subdirectory(sources/lpcopen/2.12/lpc_chip_43xx)
+if(NOT DEFINED LPCOPEN_VERSION)
+  set(LPCOPEN_VERSION 2.12)
+endif()
+set(LPCOPEN_PATH ${CMAKE_SOURCE_DIR}/sources/lpcopen/${LPCOPEN_VERSION}/lpc_chip_43xx)
+add_subdirectory(${LPCOPEN_PATH})
+message(STATUS "LPCOpen Path: " ${LPCOPEN_PATH})
+message(STATUS "LPCOpen Version: " ${LPCOPEN_VERSION})
 
 #########################
 # Board Support Package #
 #########################
 if(DEFINED BSP_NAME)
   if(DEFINED BSP_VERSION)
-    set(BSP_PATH ${BSP_NAME}/${BSP_VERSION})
-    add_subdirectory(sources/bsp/${BSP_PATH})
+    set(BSP_PATH ${CMAKE_SOURCE_DIR}/sources/bsp/${BSP_NAME}/${BSP_VERSION})
+    add_subdirectory(${BSP_PATH})
     message(STATUS "Board Support Package: " ${BSP_NAME})
     message(STATUS "Board Support Version: " ${BSP_VERSION})
   else()

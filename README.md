@@ -49,6 +49,7 @@ A number of additional arguments can be specified to CMake to further configure 
 * **CRP**: Enable/disable Code Read Protection [ON, OFF]. *Default: OFF*
 * **BSP_NAME**: Use a Board Support Package. The value must match the BSP folder name located in *sources/bsp*. For example: "lpc_board_ea_oem_4357". *No BSP is used if this argument is not passed.*
 * **BSP_VERSION**: Board Support Package version to use. The value must match the name of a subdirectory in the BSP folder. For example: "2.12". *This argument must be specified with BSP_NAME.*
+* **LPCOPEN_VERSION**: LPCOpen version to use in the BSP (or in the application if no BSP is present). The value must match the name of a subdirectory in the *sources/lpcopen* folder. *Default: 2.12*
 
 ## Make Targets
 * ```make```: Builds the entire project and outputs an .axf (ARM Executable Format) file - this is actually a ELF/DWARF image. Equivalent to ```make all```.
