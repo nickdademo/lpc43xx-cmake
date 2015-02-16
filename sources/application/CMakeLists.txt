@@ -39,8 +39,6 @@ else()
   target_link_libraries(${OUTPUT_NAME} lpc_chip_43xx)
 endif()
 
-target_link_libraries(${OUTPUT_NAME} freertos)
-
 # Print size of binary
 add_custom_command(
   TARGET ${OUTPUT_NAME}
