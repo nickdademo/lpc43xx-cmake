@@ -9,7 +9,7 @@ add_definitions(
 )
 
 # Build type-specific definitions
-if(DEFINED CMAKE_RELEASE)
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
   add_definitions(-O2 -Os)          # O2: Optimize even more, Os: Optimize for size
 else()
   add_definitions(-O0 -g3 -DDEBUG)  # O0: Reduce compilation time and make debugging produce the expected results, g3: Level 3 debugging information
