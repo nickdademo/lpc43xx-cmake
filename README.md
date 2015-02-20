@@ -62,3 +62,4 @@ A number of additional arguments can be specified to CMake to further configure 
 * ```make hex```: Generate a hex file
 * ```make bin```: Generate a binary file which includes the required checksum (See: http://www.lpcware.com/content/faq/lpcxpresso/image-checksums)
 * ```make lst```: Generate a listings file
+* ```make flash```: Flash the binary file to the target via OpenOCD. Only available if the CMake argument ```OPENOCD_BINARY``` is specified and valid. Note: This target calls ```make bin``` before flashing.
