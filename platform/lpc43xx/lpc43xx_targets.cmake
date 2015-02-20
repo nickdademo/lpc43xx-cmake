@@ -20,3 +20,11 @@ add_custom_target(lst
   DEPENDS ${OUTPUT_NAME}
   COMMAND ${CMAKE_OBJDUMP} -x -D ${EXECUTABLE_OUTPUT_PATH}/${OUTPUT_NAME} > ${EXECUTABLE_OUTPUT_PATH}/${CMAKE_PROJECT_NAME}.lst
 )
+
+if(${HAVE_OPENOCD})
+  add_custom_target(flash
+    DEPENDS ${OUTPUT_NAME}
+    COMMAND make bin
+    COMMAND ${OPENOCD_BINARY} -c "set _TRANSPORT ${OPENOCD_TRANSPORT}" -f ${CMAKE_SOURCE_DIR}/debug/${OPENOCD_CONFIG} -c "init; reset; sleep 500; halt; flash protect ${FLASH_BANK} 0 last off; flash write_image erase ${EXECUTABLE_OUTPUT_PATH}/${CMAKE_PROJECT_NAME}.bin ${FLASH_BANK_ADDRESS} bin; sleep 500; reset; shutdown;"
+  )
+endif()
