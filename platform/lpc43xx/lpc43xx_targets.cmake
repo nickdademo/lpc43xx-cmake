@@ -27,4 +27,8 @@ if(${HAVE_OPENOCD})
     COMMAND make bin
     COMMAND ${OPENOCD_BINARY} -c "set _TRANSPORT ${OPENOCD_TRANSPORT}" -f ${CMAKE_SOURCE_DIR}/debug/${OPENOCD_CONFIG} -c "init; reset; sleep 500; halt; flash protect ${FLASH_BANK} 0 last off; flash write_image erase ${EXECUTABLE_OUTPUT_PATH}/${CMAKE_PROJECT_NAME}.bin ${FLASH_BANK_ADDRESS} bin; sleep 500; reset; shutdown;"
   )
+  add_custom_target(erase
+    DEPENDS ${OUTPUT_NAME}
+    COMMAND ${OPENOCD_BINARY} -c "set _TRANSPORT ${OPENOCD_TRANSPORT}" -f ${CMAKE_SOURCE_DIR}/debug/${OPENOCD_CONFIG} -c "init; reset; sleep 500; halt; flash protect ${FLASH_BANK} 0 last off; flash erase_sector ${FLASH_BANK} 0 last; sleep 500; reset; shutdown;"
+  )
 endif()
