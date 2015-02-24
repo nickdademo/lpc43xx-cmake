@@ -6,6 +6,7 @@
  * LPCXpresso (v7.6.2): http://www.lpcware.com/lpcxpresso/download
 * (Windows-only) GNU ARM Build Tools (v2.3): http://sourceforge.net/projects/gnuarmeclipse/files/Build%20Tools/
  * Ensure the path to the installed tools is added to the Windows `PATH` variable.
+ * Alternatively, instead of installing the GNU ARM Built Tools, you can also simply add the path to the LPCXpresso-supplied tools to the Windows `PATH` variable: e.g. *C:\nxp\LPCXpresso_7.6.2_326\lpcxpresso\msys\bin*
 * Python 3.4+ (v3.4.2) (if debugging within LPCXpresso is required): https://www.python.org/downloads/
  * Requires lxml package: http://lxml.de/
 

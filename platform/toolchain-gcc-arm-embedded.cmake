@@ -4,7 +4,7 @@ if(NOT TOOLCHAIN_PREFIX)
   message(FATAL_ERROR "No TOOLCHAIN_PREFIX specified.")
 endif()
 
-# LPCXPresso version check
+# LPCXpresso version check
 string(REGEX MATCH "lpcxpresso" MATCH_STR ${TOOLCHAIN_PREFIX})
 if(NOT ${MATCH_STR} STREQUAL "")
   # Get version from specified path prefix
@@ -16,7 +16,7 @@ if(NOT ${MATCH_STR} STREQUAL "")
       message(FATAL_ERROR "LPCXpresso version not supported: " ${LPCXPRESSO_VERSION})
     endif()
   else()
-    message(STATUS "WARNING: Could not check LPCXpresso version.")
+    message(STATUS "WARNING: Could not check LPCXpresso version. Build may not work correctly.")
   endif()
 endif()
 
