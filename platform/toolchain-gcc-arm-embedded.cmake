@@ -4,6 +4,22 @@ if(NOT TOOLCHAIN_PREFIX)
   message(FATAL_ERROR "No TOOLCHAIN_PREFIX specified.")
 endif()
 
+# LPCXPresso version check
+string(REGEX MATCH "lpcxpresso" MATCH_STR ${TOOLCHAIN_PREFIX})
+if(NOT ${MATCH_STR} STREQUAL "")
+  # Get version from specified path prefix
+  string(REGEX MATCH "([0-9].[0-9].[0-9])" LPCXPRESSO_VERSION ${TOOLCHAIN_PREFIX})
+  if(NOT ${LPCXPRESSO_VERSION} STREQUAL "")
+    message(STATUS "LPCXpresso detected: v" ${LPCXPRESSO_VERSION})
+    # Check if version is supported
+    if(${LPCXPRESSO_VERSION} VERSION_LESS "7.6.2")
+      message(FATAL_ERROR "LPCXpresso version not supported: " ${LPCXPRESSO_VERSION})
+    endif()
+  else()
+    message(STATUS "WARNING: Could not check LPCXpresso version.")
+  endif()
+endif()
+
 set(TARGET_TRIPLET "arm-none-eabi")
 
 set(TOOLCHAIN_BIN_DIR ${TOOLCHAIN_PREFIX}/bin)
