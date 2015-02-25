@@ -49,8 +49,8 @@ A number of additional arguments can be specified to CMake to further configure 
 * **CHAR_PRINTF**: Enable/disable character-based printf (rather than string-based) (for redlib only) [ON, OFF]. *Default: OFF*
 * **CPP**: Enable/disable C++ support [ON, OFF]. *Default: OFF*
 * **CRP**: Enable/disable Code Read Protection [ON, OFF]. *Default: OFF*
-* **BSP_NAME**: Use a Board Support Package. The value must match the BSP folder name located in *sources/bsp*. For example: "lpc_board_ea_oem_4357". *No BSP is used if this argument is not passed.*
-* **BSP_VERSION**: Board Support Package version to use. The value must match the name of a subdirectory in the BSP folder. For example: "2.12". *This argument must be specified with BSP_NAME.*
+* **BSP_NAME**: Board Support Package to use. *This argument is optional: just ensure that the path to the BSP matches sources/bsp/```BSP_NAME```/```BSP_VERSION```*. Note: If both ```BSP_NAME``` and ```BSP_VERSION``` are not specified, no BSP will be used.*
+* **BSP_VERSION**: Board Support Package version to use. *This argument is optional: just ensure that the path to the BSP matches sources/bsp/```BSP_NAME```/```BSP_VERSION```. Note: If both ```BSP_NAME``` and ```BSP_VERSION``` are not specified, no BSP will be used.*
 * **LPCOPEN_VERSION**: LPCOpen version to use in the BSP (or in the application if no BSP is present). The value must match the name of a subdirectory in the *sources/lpcopen* folder. *Default: 2.12*
 * **OPENOCD_BINARY**: Specify the path to the OpenOCD binary executable. If specified and valid, target device can be flashed via ```make flash```.
 * **OPENOCD_CONFIG**: Specify the OpenOCD configuration file to use. This value must match the name of a file in the *debug* directory. *Default: stlink-v2_lpc43xx.cfg*
