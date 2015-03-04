@@ -87,14 +87,17 @@ INCLUDE "path_to_SECTIONS_file.ld"
 #### Library File
 * Tells the linker which C library to link.
 * **DEPENDS:** ```CLIB```, ```HOSTING```
+
 #### CPP Library File
 * Tells the linker to link the C++ library.
 * Tells the linker to link the required initialization and termination routines for C++ constructors and destructors respectively.
 * **DEPENDS:** ```CPP```
+
 #### Memory File
 * Defines each memory region (base address and size).
 * Defines symbols for the top of each memory region.
 * **DEPENDS:** None - this file is boilerplate (i.e. it does not depend on any CMake arguments).
+
 #### Sections File
 * Tells the linker where to put each section (e.g. text, rodata, bss, data) in memory.
 * **DEPENDS:** ```CPP```, ```CRP```
