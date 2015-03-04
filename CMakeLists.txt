@@ -112,6 +112,14 @@ if(NOT RESETSCRIPT)
 endif()
 message(STATUS "LPCXpresso reset script: " ${RESETSCRIPT})
 
+# Set Linker Script dir if not set
+if(NOT DEFINED LINKER_SCRIPT_DIR)
+  set(LINKER_SCRIPT_DIR "${CMAKE_SOURCE_DIR}/platform/lpc43xx/ldscripts")
+else()
+  set(LINKER_SCRIPT_DIR "${CMAKE_SOURCE_DIR}/${LINKER_SCRIPT_DIR}")
+endif()
+message(STATUS "Linker script directory: " ${LINKER_SCRIPT_DIR})
+
 # Check if Python is present
 find_package(PythonInterp 3.4)
 if(NOT PYTHONINTERP_FOUND)

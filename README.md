@@ -65,3 +65,38 @@ A number of additional arguments can be specified to CMake to further configure 
 * ```make lst```: Generate a listings file
 * ```make flash```: Flash the binary file to the target via OpenOCD. Only available if the CMake argument ```OPENOCD_BINARY``` is specified and valid. Note: This target calls ```make bin``` before flashing.
 * ```make erase```: Erases the target device flash via OpenOCD. Only available if the CMake argument ```OPENOCD_BINARY``` is specified and valid. Note: The flash bank specified by ```FLASHDRIVER``` will be erased only.
+
+## Linker Script
+### Inputs
+The linker script is generated dynamically and changes depending on the following CMake arguments:
+
+* ```CLIB```
+* ```HOSTING```
+* ```CPP```
+* ```CRP```
+
+### Format
+The generated linker script uses the ```INCLUDE``` command to add all correct components in order to create a complete linker script:
+
+```
+INCLUDE "path_to_LIBRARY_file.ld"
+INCLUDE "path_to_CPP_LIBRARY_file.ld" /* Only added if C++ is enabled */
+INCLUDE "path_to_MEMORY_file.ld"
+INCLUDE "path_to_SECTIONS_file.ld"
+```
+#### Library File
+* Tells the linker which C library to link.
+* **DEPENDS:** ```CLIB```, ```HOSTING```
+#### CPP Library File
+* Tells the linker to link the C++ library.
+* Tells the linker to link the required initialization and termination routines for C++ constructors and destructors respectively.
+* **DEPENDS:** ```CPP```
+#### Memory File
+* Defines each memory region (base address and size).
+* Defines symbols for the top of each memory region.
+* **DEPENDS:** None - this file is boilerplate (i.e. it does not depend on any CMake arguments).
+#### Sections File
+* Tells the linker where to put each section (e.g. text, rodata, bss, data) in memory.
+* **DEPENDS:** ```CPP```, ```CRP```
+    * If ```CPP``` is enabled, where to put the required C++ library initialization code is included.
+    * If ```CRP``` is enabled, where to put the required CRP value in flash is included.
