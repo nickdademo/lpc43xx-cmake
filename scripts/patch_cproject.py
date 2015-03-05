@@ -23,6 +23,7 @@ resetScript = args.resetscript
 p = subprocess.Popen("%s %s/generate_targetconfig.py -d %s -f %s -r %s" % (pythonPath, scriptDir, device, flashDriver, resetScript), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 out, err = p.communicate()
 targetConfigStr = out
+_targetConfigStr = targetConfigStr.decode('utf-8').replace('\n', '').replace('\r', '')
 
 # Open and parse Eclipse .cproject XML file
 doc = etree.parse(cprojectfile)
@@ -35,7 +36,7 @@ dataToWrite = False
 ########################
 # Check if data exists
 crtConfig_el = doc.xpath("/cproject/storageModule[@moduleId='com.crt.config']/projectStorage")
-if len(crtConfig_el) > 0 and (len(crtConfig_el[0].text) > 0):
+if len(crtConfig_el) > 0 and (len(crtConfig_el[0].text) > 0) and crtConfig_el[0].text == _targetConfigStr:
     print("Target Configuration data already exists.")
 # Add data
 else:
@@ -52,7 +53,7 @@ else:
     else:
         projectStorage = etree.SubElement(storageModule, 'projectStorage')
     # Set text of 'projectStorage' element to target configuration data
-    projectStorage.text = targetConfigStr.decode('utf-8').replace('\n', '').replace('\r', '')
+    projectStorage.text = _targetConfigStr
     print("Target Configuration data added.")
     dataToWrite = True
 
