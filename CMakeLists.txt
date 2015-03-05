@@ -220,7 +220,13 @@ endif()
 add_subdirectory(sources/application)
 
 # Print linker script used
-message(STATUS "Linker script: " ${LINKER_SCRIPT})
+message(STATUS "Linker script filename: " ${LINKER_SCRIPT})
+message(STATUS "Linker script component (LIB): " ${LINKER_SCRIPT_LIB})
+if(NOT ${LINKER_SCRIPT_LIB_CPP} STREQUAL "")
+  message(STATUS "Linker script component (LIB CPP): " ${LINKER_SCRIPT_LIB_CPP})
+endif()
+message(STATUS "Linker script component (MEM): " ${LINKER_SCRIPT_MEM})
+message(STATUS "Linker script component (SECTIONS): " ${LINKER_SCRIPT_SECTIONS})
 
 # Check whether *printf float and char printf arguments are applicable
 if(${PRINTF_FLOAT})
