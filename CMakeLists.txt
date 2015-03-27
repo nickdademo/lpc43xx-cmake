@@ -22,7 +22,7 @@ endif()
 message(STATUS "Target language: " ${LANG})
 
 # Set toolchain file if not specified
-if(NOT CMAKE_TOOLCHAIN_FILE)
+if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   set(CMAKE_TOOLCHAIN_FILE platform/toolchain-gcc-arm-embedded.cmake)
 else()
   if(NOT EXISTS ${CMAKE_TOOLCHAIN_FILE})
@@ -46,18 +46,24 @@ set(CMAKE_CONFIGURATION_TYPES "${CMAKE_CONFIGURATION_TYPES}" CACHE STRING
   FORCE
 )
 
+# Set default output name if not specified
+if (NOT OUTPUT_NAME)
+  set(OUTPUT_NAME ${CMAKE_PROJECT_NAME})
+endif()
+message(STATUS "Output name: " ${OUTPUT_NAME})
+
 # Set default build type if not specified
 if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug")
 else()
-  if(NOT ";${CMAKE_CONFIGURATION_TYPES};" MATCHESL ${CMAKE_BUILD_TYPE})
+  if(NOT ";${CMAKE_CONFIGURATION_TYPES};" MATCHES ${CMAKE_BUILD_TYPE})
     message(FATAL_ERROR "Specified build type is not supported: " ${CMAKE_BUILD_TYPE})
   endif()
 endif()
 message(STATUS "Build type: " ${CMAKE_BUILD_TYPE})
 
 # Set C/C++ library if not specified
-if(NOT CLIB)
+if(NOT DEFINED CLIB)
   set(CLIB newlib-nano)
 else()
     # Check if library is supported
@@ -79,7 +85,7 @@ else()
 endif()
 
 # Set hosting if not specified
-if(NOT HOSTING)
+if(NOT DEFINED HOSTING)
   set(HOSTING nohost)
 else()
     # Check if C library is supported
@@ -90,7 +96,7 @@ endif()
 message(STATUS "Hosting setting: " ${HOSTING})
 
 # Set hosting if not specified
-if(NOT DEVICE)
+if(NOT DEFINED DEVICE)
   set(DEVICE LPC4357)
 else()
     # Check if device is supported
@@ -101,29 +107,25 @@ endif()
 message(STATUS "Target device: " ${DEVICE})
 
 # Set flash driver file if not specified
-if(NOT FLASHDRIVER)
+if(NOT DEFINED FLASHDRIVER)
   set(FLASHDRIVER LPC18x7_43x7_2x512_BootA.cfx)
 endif()
 message(STATUS "LPCXpresso flash driver file: " ${FLASHDRIVER})
 
 # Set reset script if not specified
-if(NOT RESETSCRIPT)
+if(NOT DEFINED RESETSCRIPT)
   set(RESETSCRIPT LPC18LPC43InternalFLASHBootResetscript.scp)
 endif()
 message(STATUS "LPCXpresso reset script: " ${RESETSCRIPT})
 
-# Set Linker Script dir if not set
-if(NOT DEFINED LINKER_SCRIPT_DIR)
-  set(LINKER_SCRIPT_DIR "${CMAKE_SOURCE_DIR}/platform/lpc43xx/ldscripts")
-else()
-  set(LINKER_SCRIPT_DIR "${CMAKE_SOURCE_DIR}/${LINKER_SCRIPT_DIR}")
-endif()
-message(STATUS "Linker script directory: " ${LINKER_SCRIPT_DIR})
-
 # Check if Python is present
 find_package(PythonInterp 3.4)
 if(NOT PYTHONINTERP_FOUND)
-  message(STATUS "WARNING: Python could not be found. Python is required for debugging within LPCXpresso.")
+  message(STATUS "WARNING: Python could not be found.")
+  message(STATUS "WARNING: Python is required for debugging within LPCXpresso.")
+  if(FRANDOM_SEED)
+    message(STATUS "WARNING: Python is required for seeding GCC via -frandom-seed.")
+  endif()
 else()
   message(STATUS "Python found: " ${PYTHON_EXECUTABLE})
 endif()
@@ -133,10 +135,10 @@ if(EXISTS ${TOOLCHAIN_PREFIX}/../bin/checksum${EXECUTABLE_SUFFIX})
   set(CHECKSUM_TOOL ${TOOLCHAIN_PREFIX}/../bin/checksum)
   set(HAVE_CHECKSUM_TOOL ON)
   message(STATUS "LPCXpresso checksum tool found: " ${CHECKSUM_TOOL})
-  message(STATUS "'bin' make target will add checksum information.")
+  message(STATUS "'make bin' target will add checksum information.")
 else()
   set(HAVE_CHECKSUM_TOOL OFF)
-  message(STATUS "WARNING: LPCXpresso checksum tool not found. 'bin' make target will NOT add checksum information.")
+  message(STATUS "WARNING: LPCXpresso checksum tool not found. 'make bin' target will NOT add checksum information.")
 endif()
 
 # Check if specified path to the OpenOCD binary is correct
@@ -179,17 +181,31 @@ endif()
 set(APP_PATH ${CMAKE_SOURCE_DIR}/sources/application)
 set(PLATFORM_FILE ${CMAKE_SOURCE_DIR}/platform/lpc43xx/lpc43xx.cmake)
 set(PLATFORM_TARGETS ${CMAKE_SOURCE_DIR}/platform/lpc43xx/lpc43xx_targets.cmake)
+set(SCRIPTS_DIR ${PROJECT_SOURCE_DIR}/scripts)
 
-###########
-# LPCOpen #
-###########
+# Set Linker Script dir if not set
+if(NOT DEFINED LINKER_SCRIPT_DIR)
+  set(LINKER_SCRIPT_DIR "${CMAKE_SOURCE_DIR}/platform/lpc43xx/ldscripts/default")
+else()
+  set(LINKER_SCRIPT_DIR "${CMAKE_SOURCE_DIR}/${LINKER_SCRIPT_DIR}")
+endif()
+message(STATUS "Linker script directory: " ${LINKER_SCRIPT_DIR})
+
+#########################
+# LPCOpen: Chip Library #
+#########################
 if(NOT DEFINED LPCOPEN_VERSION)
   set(LPCOPEN_VERSION 2.12)
 endif()
-set(LPCOPEN_PATH ${CMAKE_SOURCE_DIR}/sources/lpcopen/${LPCOPEN_VERSION}/lpc_chip_43xx)
-add_subdirectory(${LPCOPEN_PATH})
-message(STATUS "LPCOpen Path: " ${LPCOPEN_PATH})
-message(STATUS "LPCOpen Version: " ${LPCOPEN_VERSION})
+set(LPCOPEN_PATH ${CMAKE_SOURCE_DIR}/sources/lpcopen/${LPCOPEN_VERSION})
+# Chip Library
+if(EXISTS ${LPCOPEN_PATH}/lpc_chip_43xx)
+  set(LPCOPEN_CHIP_PATH ${LPCOPEN_PATH}/lpc_chip_43xx)
+  add_subdirectory(${LPCOPEN_CHIP_PATH} "${CMAKE_CURRENT_BINARY_DIR}/lpc_chip_43xx")
+  message(STATUS "LPCOpen chip library (lpc_chip_43xx) path: " ${LPCOPEN_CHIP_PATH})
+else()
+  message(FATAL_ERROR "LPCOpen chip library (lpc_chip_43xx) source folder not found in: ${LPCOPEN_PATH}/lpc_chip_43xx")
+endif()
 
 #########################
 # Board Support Package #
@@ -210,8 +226,8 @@ else()
     message(FATAL_ERROR "BSP path is invalid: " ${BSP_PATH})
   endif()
   add_subdirectory(${BSP_PATH})
-  message(STATUS "Board Support Package: " ${BSP_NAME})
-  message(STATUS "Board Support Version: " ${BSP_VERSION})
+  message(STATUS "BSP Name: " ${BSP_NAME})
+  message(STATUS "BSP Version: " ${BSP_VERSION})
 endif()
 
 ###############
@@ -290,7 +306,7 @@ if(PYTHONINTERP_FOUND)
   if (CMAKE_HOST_WIN32)
     set(OUT patch_cproject.bat)
     execute_process(
-      COMMAND ${CMAKE_COMMAND} -E echo "${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/scripts/patch_cproject.py --pythonpath ${PYTHON_EXECUTABLE} --scriptpath ${PROJECT_SOURCE_DIR}/scripts --cproject ${PROJECT_BINARY_DIR}/.cproject --device ${DEVICE} --flashdriver ${FLASHDRIVER} --resetscript ${RESETSCRIPT}"
+      COMMAND ${CMAKE_COMMAND} -E echo "${PYTHON_EXECUTABLE} ${SCRIPTS_DIR}/patch_cproject.py --pythonpath ${PYTHON_EXECUTABLE} --scriptpath ${SCRIPTS_DIR} --cproject ${PROJECT_BINARY_DIR}/.cproject --device ${DEVICE} --flashdriver ${FLASHDRIVER} --resetscript ${RESETSCRIPT}"
       WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
       OUTPUT_QUIET
       OUTPUT_FILE ${OUT}
@@ -300,7 +316,7 @@ if(PYTHONINTERP_FOUND)
   else()
     set(OUT patch_cproject.sh)
     execute_process(
-      COMMAND ${CMAKE_COMMAND} -E echo "#!/bin/bash\n${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/scripts/patch_cproject.py --pythonpath ${PYTHON_EXECUTABLE} --scriptpath ${PROJECT_SOURCE_DIR}/scripts --cproject ${PROJECT_BINARY_DIR}/.cproject --device ${DEVICE} --flashdriver ${FLASHDRIVER} --resetscript ${RESETSCRIPT}"
+      COMMAND ${CMAKE_COMMAND} -E echo "#!/bin/bash\n${PYTHON_EXECUTABLE} ${SCRIPTS_DIR}/patch_cproject.py --pythonpath ${PYTHON_EXECUTABLE} --scriptpath ${SCRIPTS_DIR} --cproject ${PROJECT_BINARY_DIR}/.cproject --device ${DEVICE} --flashdriver ${FLASHDRIVER} --resetscript ${RESETSCRIPT}"
       WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
       OUTPUT_QUIET
       OUTPUT_FILE ${OUT}

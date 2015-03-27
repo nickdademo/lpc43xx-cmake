@@ -6,7 +6,7 @@
  * LPCXpresso (v7.6.2): http://www.lpcware.com/lpcxpresso/download
 * (Windows-only) GNU ARM Build Tools (v2.3): http://sourceforge.net/projects/gnuarmeclipse/files/Build%20Tools/
  * Ensure the path to the installed tools is added to the Windows `PATH` variable.
- * Alternatively, instead of installing the GNU ARM Built Tools, you can also simply add the path to the LPCXpresso-supplied tools to the Windows `PATH` variable: e.g. *C:\nxp\LPCXpresso_7.6.2_326\lpcxpresso\msys\bin*
+ * Alternatively, instead of installing the GNU ARM Build Tools, you can also simply add the path to the LPCXpresso-supplied tools to the Windows `PATH` variable: e.g. *C:\nxp\LPCXpresso_7.6.2_326\lpcxpresso\msys\bin*
 * Python 3.4+ (v3.4.2) (if debugging within LPCXpresso is required): https://www.python.org/downloads/
  * Requires lxml package: http://lxml.de/
 
@@ -37,6 +37,7 @@ $ patch_cproject.sh
 A number of additional arguments can be specified to CMake to further configure the build:
 * **TOOLCHAIN_PREFIX**: Path to the GNU ARM toolchain.
 * **CMAKE_BUILD_TYPE**: Build type [Release, Debug]. *Default: Debug*
+* **OUTPUT_NAME**: Set name of output files: e.g. ```OUTPUT_NAME```.axf, ```OUTPUT_NAME```.bin, ```OUTPUT_NAME```.hex, ```OUTPUT_NAME```.lst. *Default: ```CMAKE_PROJECT_NAME```*
 * **CMAKE_ECLIPSE_MAKE_ARGUMENTS**: Arguments to pass to Eclipse make. Here the number of threads for parallel building can be specified. *Default: -j4*
 * **CMAKE_ECLIPSE_VERSION**: Version of Eclipse to generate for. Specifying the correct version allows the CMake Eclipse Generator to use the latest Eclipse features. *LPCXpresso v7.6.2 uses Eclipse 4.4.0.*
 * **CLIB**: C/C++ library to use [newlib, newlib-nano, redlib]. *Default: newlib-nano*
@@ -52,6 +53,9 @@ A number of additional arguments can be specified to CMake to further configure 
 * **BSP_NAME**: Board Support Package to use. *This argument is optional: just ensure that the path to the BSP matches sources/bsp/```BSP_NAME```/```BSP_VERSION```. Note: If both ```BSP_NAME``` and ```BSP_VERSION``` are not specified, no BSP will be used.*
 * **BSP_VERSION**: Board Support Package version to use. *This argument is optional: just ensure that the path to the BSP matches sources/bsp/```BSP_NAME```/```BSP_VERSION```. Note: If both ```BSP_NAME``` and ```BSP_VERSION``` are not specified, no BSP will be used.*
 * **LPCOPEN_VERSION**: LPCOpen version to use in the BSP (or in the application if no BSP is present). The value must match the name of a subdirectory in the *sources/lpcopen* folder. *Default: 2.12*
+* **LINKER_SCRIPT_DIR**: Specify which linker scripts to use. This allows custom linker scripts to be used. IMPORTANT: Ensure that the directory layout and filenames within ```LINKER_SCRIPT_DIR``` matches that of *platform/lpc43xx/ldscripts* - a good starting point is to copy this directory and then make your required changes to the linker script files within. *If this argument is not specified, the default linker scripts contained in platform/lpc43xx/default/ldscripts are used.*
+
+### OpenOCD
 * **OPENOCD_BINARY**: Specify the path to the OpenOCD binary executable. If specified and valid, target device can be flashed via ```make flash```.
 * **OPENOCD_CONFIG**: Specify the OpenOCD configuration file to use. This value must match the name of a file in the *debug* directory. *Default: stlink-v2_lpc43xx.cfg*
 * **OPENOCD_TRANSPORT**: Specify the transport to use with the OpenOCD configuration. Ensure the configuration supports the transport you specify. *Default: hla_jtag*

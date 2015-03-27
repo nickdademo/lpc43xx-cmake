@@ -1,4 +1,4 @@
-set(LIBRARY_NAME lpc_board_ea_oem_4357)
+set(LIBRARY_NAME bsp_lpc_board_ea_oem_4357)
 
 set(LIBRARY_VERSION_MAJOR 2)
 set(LIBRARY_VERSION_MINOR 1)
@@ -13,9 +13,12 @@ file(GLOB_RECURSE HEADER_FILES
   src/*.h
 )
 
-include_directories(inc)
+set(BSP_LIBRARY_NAME ${LIBRARY_NAME} CACHE INTERNAL "BSP library name")
+set(BSP_INCLUDE_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/inc" CACHE INTERNAL "BSP include paths")
+
 include_directories(src)
-include_directories(${LPCOPEN_PATH}/inc)
+include_directories(${BSP_INCLUDE_PATHS})
+include_directories(${LPCOPEN_CHIP_INCLUDE_PATHS})
 
 set_source_files_properties(${SOURCE_FILES} PROPERTIES LANGUAGE C)
 

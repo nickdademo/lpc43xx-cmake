@@ -11,8 +11,8 @@ add_definitions(
 # Build type-specific definitions
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
   add_definitions(-O2 -Os)          # O2: Optimize even more, Os: Optimize for size
-else()
-  add_definitions(-O0 -g3 -DDEBUG)  # O0: Reduce compilation time and make debugging produce the expected results, g3: Level 3 debugging information
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  add_definitions(-O0 -g3 -DDEBUG)  # O0: Reduce compilation time and make debugging produce the expected results (default), g3: Level 3 debugging information
 endif()
 
 # C flags
@@ -60,7 +60,7 @@ if(CPP AND (${CLIB} STREQUAL newlib OR ${CLIB} STREQUAL newlib-nano))
 else()
   execute_process(
     COMMAND ${CMAKE_COMMAND} -E echo "INCLUDE \"${LINKER_SCRIPT_LIB}\"\nINCLUDE \"${LINKER_SCRIPT_MEM}\"\nINCLUDE \"${LINKER_SCRIPT_SECTIONS}\""
-    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}}
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
     OUTPUT_QUIET
     OUTPUT_FILE ${LINKER_SCRIPT_FILENAME}
   )
@@ -100,5 +100,5 @@ set(LINKER_SCRIPT ${PROJECT_BINARY_DIR}/${LINKER_SCRIPT_FILENAME} CACHE INTERNAL
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -nostdlib -Xlinker --gc-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb -T ${LINKER_SCRIPT} -L ${LINKER_SCRIPT_DIR}")
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
-set(OUTPUT_NAME ${CMAKE_PROJECT_NAME}.axf)
-set(FULL_OUTPUT_NAME ${EXECUTABLE_OUTPUT_PATH}/${OUTPUT_NAME})
+set(FULL_OUTPUT_NAME ${OUTPUT_NAME}.axf)
+set(FULL_OUTPUT_PATH ${EXECUTABLE_OUTPUT_PATH}/${FULL_OUTPUT_NAME})

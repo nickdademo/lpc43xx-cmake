@@ -8,7 +8,9 @@ set(LIBRARY_VERSION ${LIBRARY_VERSION_MAJOR}.${LIBRARY_VERSION_MINOR}.${LIBRARY_
 file(GLOB_RECURSE SOURCE_FILES src/*.c)
 file(GLOB_RECURSE HEADER_FILES inc/*.h)
 
-include_directories(inc)
+set(LPCOPEN_CHIP_INCLUDE_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/inc CACHE INTERNAL "lpcopen chip library include paths")
+
+include_directories(${LPCOPEN_CHIP_INCLUDE_PATHS})
 
 set_source_files_properties(${SOURCE_FILES} PROPERTIES LANGUAGE C)
 
